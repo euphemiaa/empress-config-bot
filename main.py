@@ -9,11 +9,13 @@
   ۲) دیکود base64 در صورت نیاز + پارس لینک‌های vmess / vless / trojan / ss
   ۳) تست TCP به host:port هر سرور (ThreadPoolExecutor، پیش‌فرض ۴۰ ورکر، تایم‌اوت ۳ ثانیه)
   ۴) حذف تکراری‌های پست‌شده با حافظه state/posted.json
-  ۵) انتخاب بهترین کانفیگ با اولویت پروتکل (پیش‌فرض: اول بهترین VLESS — سبک کانال‌های
-     معروف مثل @flyv2ray که هر پست یک کانفیگ تکی می‌گذارند)
-  ۶) ساخت پست HTML فارسی: تاریخ شمسی + بلاک <code> + راهنمای سریع v2rayNG و NPV Tunnel
-     + لینک دانلود اپ‌ها + دکمه‌های شیشه‌ای + هشتگ + فوتر امپرس
-  ۷) ارسال با Bot API (parse_mode=HTML) یا نمایش پیش‌نمایش در حالت DRY_RUN=1
+  ۵) انتخاب ۸ کانفیگ در هر پست: اول ۶ تا بهترین VLESS، بعد ۲ تا از بقیه پروتکل‌ها
+     (قابل تغییر با CONFIGS_PER_POST و VLESS_COUNT)
+  ۶) ساخت پست HTML فارسی چندکانفیگی به سبک @flyv2ray: تاریخ شمسی + بلوک‌های <code>
+     + راهنمای سریع v2rayNG و NPV Tunnel + لینک دانلود اپ‌ها + دکمه‌ها + هشتگ + فوتر
+  ۷) ساخت فایل پیوست .txt با همان کانفیگ‌ها (هر خط = یک کانفیگ برای کپی سریع در
+     v2rayNG و NPV Tunnel) و ارسال با sendDocument به‌صورت ریپلای به پست
+  ۸) ارسال با Bot API (parse_mode=HTML) یا نمایش پیش‌نمایش در حالت DRY_RUN=1
 
 متغیرهای محیطی:
   BOT_TOKEN            توکن بات از BotFather (الزامی برای ارسال واقعی)
@@ -23,9 +25,10 @@
   DRY_RUN              1 = فقط پیش‌نمایش؛ بدون ارسال و بدون تغییر posted.json
   WORKERS              تعداد نخ‌های تست TCP (پیش‌فرض 40)
   TCP_TIMEOUT          تایم‌اوت تست به ثانیه (پیش‌فرض 3)
-  CONFIGS_PER_POST     تعداد کانفیگ در هر پست (پیش‌فرض 3: بهترین VLESS + VMess + Trojan؛ 1 تا 5)
+  CONFIGS_PER_POST     تعداد کانفیگ در هر پست (پیش‌فرض ۸؛ بازه 1 تا 15)
+  VLESS_COUNT          سهم VLESS در هر پست (پیش‌فرض ۶؛ بقیه اسلات‌ها از بقیه پروتکل‌ها پر می‌شود)
   SUB_MAX_CONFIGS      تعداد کانفیگ در فایل سابسکریپشن (پیش‌فرض 100)
-  PROTO_PRIORITY       اولویت پروتکل‌ها (پیش‌فرض vless,vmess,trojan,ss — یعنی اول بهترین VLESS)
+  PROTO_PRIORITY       اولویت پروتکل‌ها (پیش‌فرض vless,vmess,trojan,ss)
   STATE_MAX_AGE_DAYS   عمر حافظه dedupe به روز (پیش‌فرض 10)
 
 نکته تلگرام: دکمه شیشه‌ای فقط URL از نوع http/https قبول می‌کند، بنابراین
@@ -55,12 +58,14 @@ from datetime import datetime, timedelta, timezone
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "").strip()
 CHANNEL_ID = os.environ.get("CHANNEL_ID", "").strip()
 CHANNEL_LINK = os.environ.get("CHANNEL_LINK", "").strip() or "https://t.me/EmpressConfig"
-TUTORIAL_URL = os.environ.get("TUTORIAL_URL", "").strip()  # فاز ۲: لینک پست آموزشی
+# لینک پست آموزشی پین‌شده در کانال (پیش‌فرض؛ با متغیر TUTORIAL_URL قابل بازنویسی)
+TUTORIAL_URL = os.environ.get("TUTORIAL_URL", "").strip() or "https://t.me/EmpressConfig/21"
 DRY_RUN = os.environ.get("DRY_RUN", "0").strip().lower() in ("1", "true", "yes", "y")
 
 WORKERS = int(os.environ.get("WORKERS", "40"))
 TCP_TIMEOUT = float(os.environ.get("TCP_TIMEOUT", "3"))
-CONFIGS_PER_POST = max(1, int(os.environ.get("CONFIGS_PER_POST", "3")))
+CONFIGS_PER_POST = max(1, min(15, int(os.environ.get("CONFIGS_PER_POST", "8"))))
+VLESS_COUNT = max(0, int(os.environ.get("VLESS_COUNT", "6")))
 SUB_MAX_CONFIGS = max(1, int(os.environ.get("SUB_MAX_CONFIGS", "100")))
 PROTO_PRIORITY = [p for p in (x.strip().lower() for x in
                   os.environ.get("PROTO_PRIORITY", "vless,vmess,trojan,ss").split(",")) if p]
@@ -115,7 +120,7 @@ APP_NPV_URL = "https://play.google.com/store/apps/details?id=com.napsternetlabs.
 NETWORK_URL = "https://t.me/EmpressNetwork"
 
 PROTO_LABEL = {"vless": "VLESS", "vmess": "VMess", "trojan": "Trojan", "ss": "Shadowsocks"}
-NUM_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+NUM_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
 
 
 def proto_title(c):
@@ -370,29 +375,36 @@ def prune_state(state):
 
 # ------------------------- ساخت پست -------------------------
 
-def build_message(selected, date_str, time_str, total_tested, total_alive):
-    """پست به سبک کانال‌های معروف (الگوی @flyv2ray): تیتر + بلاک کانفیگ + راهنما + فوتر."""
+def build_message(selected, date_str, time_str, total_tested=0, total_alive=0):
+    """پست چندکانفیگی به سبک @flyv2ray: تیتر + بلوک‌های شماره‌دار کانفیگ + راهنما + فوتر."""
     lines = [
         "👑 <b>امپرس | کانفیگ رایگان</b>",
         f"📅 {date_str} • ⏰ {time_str}",
         "",
-        "🔥 <b>تازه تست‌شده و سالم — مناسب v2rayNG و NPV Tunnel</b>",
+        f"🔥 <b>{fa(len(selected))} کانفیگ تازه تست‌شده و سالم — مناسب v2rayNG و NPV Tunnel</b>",
         "",
     ]
-    for c in selected:
-        lines.append(f"⚡️ <b>{proto_title(c)}</b> | ⏱ پینگ {fa(c['latency'])} ms")
+    for i, c in enumerate(selected, 1):
+        num = NUM_EMOJI[i - 1] if i <= len(NUM_EMOJI) else f"{fa(i)}‌."
+        lines.append(f"{num} ⚡️ <b>{proto_title(c)}</b> | ⏱ پینگ {fa(c['latency'])} ms")
         lines.append(f"<code>{html.escape(c['link'], quote=False)}</code>")
         lines.append("")
     lines.append("📲 <b>راهنمای سریع:</b>")
-    lines.append("۱️⃣ کانفیگ بالا را کپی کن")
+    lines.append("۱️⃣ کانفیگ دلخواه را کپی کن")
     lines.append("۲️⃣ v2rayNG ← دکمه ➕ ← Import config from clipboard")
     lines.append("۳️⃣ NPV Tunnel ← دکمه ➕ ← Import Config")
+    lines.append(f"📎 فایل پیوست پایین پست = همین {fa(len(selected))} کانفیگ برای کپی سریع")
     lines.append("")
     lines.append(f"⬇️ <a href=\"{APP_V2RAYNG_URL}\">دانلود v2rayNG</a> | "
                  f"<a href=\"{APP_NPV_URL}\">دانلود NPV Tunnel</a>")
     lines.append("🌟 کانفیگ را با دوستانت به اشتراک بگذار 👌")
     lines.append("")
-    lines.append((HASHTAGS + " " + proto_hashtag(selected[0])) if selected else HASHTAGS)
+    tags = []
+    for c in selected:
+        t = proto_hashtag(c)
+        if t not in tags:
+            tags.append(t)
+    lines.append((HASHTAGS + " " + " ".join(tags[:3])).strip())
     lines.append("")
     lines.append(FOOTER)
     return "\n".join(lines)
@@ -460,6 +472,71 @@ def send_post(text):
             hint = "💡 " + h
             break
     die(f"ارسال به تلگرام ناموفق بود → {last_err}\n{hint}")
+
+
+# ------------------------- فایل پیوست کانفیگ‌ها -------------------------
+
+def build_attachment_text(selected, date_str, time_str):
+    """فایل .txt با همان کانفیگ‌های پست؛ هر خط = یک کانفیگ (قابل کپی برای هر دو اپ)."""
+    head = (
+        "👑 امپرس | کانفیگ رایگان V2RayNG\n"
+        f"📅 {date_str} • ⏰ {time_str}\n"
+        "هر خط = یک کانفیگ سالم — مناسب v2rayNG و NPV Tunnel\n"
+        "کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد\n"
+        + "=" * 34 + "\n"
+    )
+    return head + "\n".join(c["link"] for c in selected) + "\n"
+
+
+def tg_upload_document(file_bytes, filename, caption, reply_to=None):
+    """ارسال فایل با sendDocument (multipart/form-data، بدون کتابخانه خارجی)."""
+    boundary = "----EmpressBoundary" + hashlib.sha1(filename.encode()).hexdigest()[:16]
+    fields = [("chat_id", CHANNEL_ID), ("caption", caption), ("parse_mode", "HTML")]
+    if reply_to:
+        fields.append(("reply_parameters", json.dumps(
+            {"message_id": reply_to, "allow_sending_without_reply": True})))
+    body = b""
+    for k, v in fields:
+        body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n"
+                 f"{v}\r\n").encode("utf-8")
+    body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"document\"; "
+             f"filename=\"{filename}\"\r\nContent-Type: application/octet-stream\r\n\r\n"
+             ).encode("utf-8") + file_bytes + b"\r\n"
+    body += f"--{boundary}--\r\n".encode("utf-8")
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument"
+    req = urllib.request.Request(url, data=body, headers={
+        "Content-Type": f"multipart/form-data; boundary={boundary}",
+    })
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def send_config_file(selected, date_str, time_str, reply_to=None):
+    """ساخت و ارسال فایل پیوست کانفیگ‌ها؛ برمی‌گرداند: True/False."""
+    filename = "Empress-Configs.txt"
+    content = build_attachment_text(selected, date_str, time_str).encode("utf-8")
+    caption = (
+        f"📎 فایل کانفیگ‌های همین پست — {fa(len(selected))} کانفیگ (هر خط = یک کانفیگ)\n\n"
+        "📲 روش استفاده: فایل را باز کن ← خط دلخواه را کپی کن ← "
+        "در v2rayNG یا NPV Tunnel دکمه ➕ ← Import از کلیپ‌بورد\n\n"
+        "👑 @EmpressConfig"
+    )
+    try:
+        resp = tg_upload_document(content, filename, caption, reply_to=reply_to)
+        if resp.get("ok"):
+            return True
+        log(f"⚠️ ارسال فایل پیوست ناموفق: {json.dumps(resp, ensure_ascii=False)[:200]}")
+        return False
+    except urllib.error.HTTPError as e:
+        try:
+            err_body = e.read().decode("utf-8", "replace")
+        except Exception:
+            err_body = ""
+        log(f"⚠️ ارسال فایل پیوست ناموفق (HTTP {e.code}): {err_body[:200]}")
+        return False
+    except Exception as e:
+        log(f"⚠️ ارسال فایل پیوست ناموفق: {e}")
+        return False
 
 
 # ------------------------- اجرای اصلی -------------------------
@@ -549,7 +626,8 @@ def main():
         seen_host.add(hk)
     log(f"🆕 کاندیدهای جدید (پست‌نشده و غیرتکراری): {fa_num(len(candidates))}")
 
-    # ۵) انتخاب کانفیگ‌ها: اولویت پروتکل (پیش‌فرض: اول بهترین VLESS) + سقف طول تلگرام
+    # ۵) انتخاب کانفیگ‌ها: اول VLESS_COUNT تا بهترین VLESS (پیش‌فرض ۶)، بعد بقیه اسلات‌ها
+    #    از بقیه پروتکل‌ها به ترتیب اولویت — پیش‌فرض نهایی: ۸ کانفیگ = ۶ VLESS + ۲ دیگر
     date_str = jalali_date_str(now)
     time_str = fa(now.strftime("%H:%M"))
     by_proto = {}
@@ -559,21 +637,35 @@ def main():
     order += [p for p in by_proto if p not in order]
 
     selected = []
+
+    def fits(c):
+        """اگر با این کانفیگ پیام در سقف طول تلگرام جا شد، اضافه کن؛ وگرنه دورش بریز."""
+        trial = selected + [c]
+        if tg_len(build_message(trial, date_str, time_str)) <= TG_LIMIT - TG_SAFETY:
+            selected.append(c)
+            return True
+        return False
+
+    # ۵-۱) سهم VLESS — بهترین‌ها از نظر پینگ
+    vless_goal = min(VLESS_COUNT, CONFIGS_PER_POST)
+    vless_pool = by_proto.get("vless", [])
+    while vless_pool and len(selected) < vless_goal:
+        c = vless_pool.pop(0)
+        fits(c)
+    log(f"⚡️ سهم VLESS: {fa(len(selected))} از هدف {fa(vless_goal)}")
+
+    # ۵-۲) پر کردن اسلات‌های باقی‌مانده: رفت‌وبرگشت بین بقیه پروتکل‌ها به ترتیب اولویت
+    others = [p for p in order if p != "vless"]
     slot = 0
-    while len(selected) < CONFIGS_PER_POST:
-        if not any(by_proto.values()):
-            break
-        proto = order[slot % len(order)]
+    while len(selected) < CONFIGS_PER_POST and any(by_proto.get(p) for p in others):
+        proto = others[slot % len(others)]
         pool = by_proto.get(proto) or []
         if not pool:
             slot += 1  # این پروتکل کاندید نداشت؛ برو سراغ پروتکل بعدی
             continue
         c = pool.pop(0)
         by_proto[proto] = pool
-        trial = selected + [c]
-        if tg_len(build_message(trial, date_str, time_str, len(configs), len(healthy))) <= TG_LIMIT - TG_SAFETY:
-            selected = trial
-        # else: این کانفیگ خیلی بلند است؛ دور انداختیم و سراغ پروتکل/کاندید بعدی می‌رویم
+        fits(c)
         slot += 1
     if not selected:
         die("کاندیدی برای پست پیدا نشد (همه تکراری بودند یا هیچ‌کدام در محدودیت طول جا نشد).")
@@ -583,7 +675,7 @@ def main():
         log(f"   {i}. {proto_title(c)} | {c['host']}:{c['port']} | "
             f"{c['latency']}ms | طول لینک {len(c['link'])}")
 
-    message = build_message(selected, date_str, time_str, len(configs), len(healthy))
+    message = build_message(selected, date_str, time_str)
     button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
     log(f"📏 طول پیام: {tg_len(message)} واحد از ۴۰۹۶")
     log(f"🔘 دکمه شیشه‌ای: [📌 آموزش اتصال] → {button_url}")
@@ -601,6 +693,11 @@ def main():
         resp = send_post(message)
         msg_id = resp.get("result", {}).get("message_id", "?")
         log(f"🎉 پست با موفقیت در کانال ارسال شد (message_id={msg_id})")
+        # ۶-ب) فایل پیوست همان کانفیگ‌ها (به‌صورت ریپلای به پست) — برای کپی سریع در هر دو اپ
+        file_ok = send_config_file(selected, date_str, time_str,
+                                   reply_to=msg_id if isinstance(msg_id, int) else None)
+        if file_ok:
+            log("📎 فایل پیوست Empress-Configs.txt هم ارسال شد.")
         # ۷) ثبت در حافظه dedupe → workflow این فایل را با پیام [skip ci] کامیت می‌کند
         now_iso = now.isoformat(timespec="seconds")
         for c in selected:
