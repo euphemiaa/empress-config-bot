@@ -1,0 +1,10 @@
+# فایل‌های موقت پایتون
+__pycache__/
+*.pyc
+
+# سیستم‌عامل
+.DS_Store
+Thumbs.db
+
+# ⚠️ نکته مهم: پوشه state/ را ignore نکن!
+# state/posted.json حافظه dedupe ربات است و باید بین ران‌ها کامیت و حفظ شود.

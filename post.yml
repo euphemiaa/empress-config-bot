@@ -1,0 +1,58 @@
+name: امپرس | پست کانفیگ‌ها
+
+on:
+  schedule:
+    # ⚠️ کرون گیت‌هاب همیشه با ساعت UTC است (تهران = UTC+3:30 و دی‌سایور ندارد)
+    #   05:23 UTC = 08:53 تهران  |  13:23 UTC = 16:53 تهران  |  17:23 UTC = 20:53 تهران
+    # عمداً دقیقه ۰ انتخاب نشده چون در دقیقه ۰ صف گیت‌هاب شلوغ است و ران‌ها بیشتر drop می‌شوند.
+    - cron: "23 5,13,17 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "فقط پیش‌نمایش (بدون ارسال به کانال)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: empress-post
+  cancel-in-progress: false
+
+jobs:
+  post:
+    name: دریافت، تست و پست کانفیگ‌ها
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: دریافت کد از ریپو
+        uses: actions/checkout@v4
+
+      - name: آماده‌سازی پایتون
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: اجرای ربات
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          CHANNEL_LINK: ${{ secrets.CHANNEL_LINK }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+        run: python main.py
+
+      - name: کامیت کردن فایل state (با [skip ci])
+        if: ${{ !(inputs.dry_run) }}
+        run: |
+          git config user.name "empress-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase origin "$GITHUB_REF_NAME" || true
+          git add state/
+          if git diff --cached --quiet; then
+            echo "تغییری در state نبود؛ چیزی برای کامیت نیست."
+          else
+            git commit -m "به‌روزرسانی state [skip ci]"
+            git push
+          fi
