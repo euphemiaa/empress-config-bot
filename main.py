@@ -9,9 +9,11 @@
   ۲) دیکود base64 در صورت نیاز + پارس لینک‌های vmess / vless / trojan / ss
   ۳) تست TCP به host:port هر سرور (ThreadPoolExecutor، پیش‌فرض ۴۰ ورکر، تایم‌اوت ۳ ثانیه)
   ۴) حذف تکراری‌های پست‌شده با حافظه state/posted.json
-  ۵) ساخت پست HTML فارسی: تاریخ شمسی + اعداد فارسی + برچسب پروتکل + بلاک <code>
-     + دکمه شیشه‌ای «📌 آموزش اتصال» + هشتگ‌ها + فوتر امپرس
-  ۶) ارسال با Bot API (parse_mode=HTML) یا نمایش پیش‌نمایش در حالت DRY_RUN=1
+  ۵) انتخاب بهترین کانفیگ با اولویت پروتکل (پیش‌فرض: اول بهترین VLESS — سبک کانال‌های
+     معروف مثل @flyv2ray که هر پست یک کانفیگ تکی می‌گذارند)
+  ۶) ساخت پست HTML فارسی: تاریخ شمسی + بلاک <code> + راهنمای سریع v2rayNG و NPV Tunnel
+     + لینک دانلود اپ‌ها + دکمه‌های شیشه‌ای + هشتگ + فوتر امپرس
+  ۷) ارسال با Bot API (parse_mode=HTML) یا نمایش پیش‌نمایش در حالت DRY_RUN=1
 
 متغیرهای محیطی:
   BOT_TOKEN            توکن بات از BotFather (الزامی برای ارسال واقعی)
@@ -21,12 +23,14 @@
   DRY_RUN              1 = فقط پیش‌نمایش؛ بدون ارسال و بدون تغییر posted.json
   WORKERS              تعداد نخ‌های تست TCP (پیش‌فرض 40)
   TCP_TIMEOUT          تایم‌اوت تست به ثانیه (پیش‌فرض 3)
-  MAX_POST_CONFIGS     حداکثر کانفیگ در هر پست (پیش‌فرض 5)
-  MIN_POST_CONFIGS     حداقل مطلوب (پیش‌فرض 3؛ اگر نشد با هر تعدادی که جا شود پست می‌رود)
+  CONFIGS_PER_POST     تعداد کانفیگ در هر پست (پیش‌فرض 1 — سبک @flyv2ray؛ 2 تا 5 هم می‌شود)
+  PROTO_PRIORITY       اولویت پروتکل‌ها (پیش‌فرض vless,vmess,trojan,ss — یعنی اول بهترین VLESS)
   STATE_MAX_AGE_DAYS   عمر حافظه dedupe به روز (پیش‌فرض 10)
 
 نکته تلگرام: دکمه شیشه‌ای فقط URL از نوع http/https قبول می‌کند، بنابراین
 لینک‌های vless:// و vmess:// داخل بلاک <code> می‌روند تا کاربر راحت کپی کند.
+نکته NPV Tunnel: نپسترنت (NPV Tunnel / NapsternetV) همین لینک‌های vless/vmess/trojan
+را با «کپی ← ➕ ← Import Config» می‌خواند؛ پس پست ما برای هر دو اپ کار می‌کند.
 """
 
 import ast
@@ -55,8 +59,9 @@ DRY_RUN = os.environ.get("DRY_RUN", "0").strip().lower() in ("1", "true", "yes",
 
 WORKERS = int(os.environ.get("WORKERS", "40"))
 TCP_TIMEOUT = float(os.environ.get("TCP_TIMEOUT", "3"))
-MAX_POST_CONFIGS = int(os.environ.get("MAX_POST_CONFIGS", "5"))
-MIN_POST_CONFIGS = int(os.environ.get("MIN_POST_CONFIGS", "3"))
+CONFIGS_PER_POST = max(1, int(os.environ.get("CONFIGS_PER_POST", "1")))
+PROTO_PRIORITY = [p for p in (x.strip().lower() for x in
+                  os.environ.get("PROTO_PRIORITY", "vless,vmess,trojan,ss").split(",")) if p]
 STATE_MAX_AGE_DAYS = int(os.environ.get("STATE_MAX_AGE_DAYS", "10"))
 MAX_PER_HOST = 1  # در هر پست حداکثر یک کانفیگ از هر host:port (برای تنوع بیشتر)
 
@@ -98,10 +103,33 @@ SOURCES = [
 ]
 
 FOOTER = "👑 شبکه امپرس | 🆔 کانال اصلی: @EmpressNetwork"
-HASHTAGS = "#کانفیگ_رایگان #V2Ray #NPV_Tunnel"
+HASHTAGS = "#کانفیگ_رایگان #V2RayNG #NPV_Tunnel"
+
+# لینک رسمی دانلود اپ‌ها در گوگل‌پلی (برای خط «دانلود» در پست)
+APP_V2RAYNG_URL = "https://play.google.com/store/apps/details?id=com.v2ray.ang"
+APP_NPV_URL = "https://play.google.com/store/apps/details?id=com.napsternetlabs.napsternetv"
+NETWORK_URL = "https://t.me/EmpressNetwork"
 
 PROTO_LABEL = {"vless": "VLESS", "vmess": "VMess", "trojan": "Trojan", "ss": "Shadowsocks"}
 NUM_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+
+
+def proto_title(c):
+    """عنوان نمایشی پروتکل؛ برای vless/trojan نوع security هم می‌آید (مثل VLESS Reality)."""
+    label = PROTO_LABEL.get(c["proto"], c["proto"].upper())
+    m = re.search(r"[?&]security=([a-z0-9]+)", c.get("link", ""), re.I)
+    if m:
+        sec = m.group(1).lower()
+        if sec == "reality":
+            return label + " Reality"
+        if sec == "tls":
+            return label + " TLS"
+    return label
+
+
+def proto_hashtag(c):
+    t = re.sub(r"[^A-Za-z0-9_]", "_", proto_title(c).replace(" ", "_")).strip("_")
+    return "#" + t
 
 WEEKDAYS_FA = ["دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه", "یکشنبه"]
 MONTHS_FA = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
@@ -338,20 +366,29 @@ def prune_state(state):
 
 # ------------------------- ساخت پست -------------------------
 
-def build_message(selected, date_str, total_tested, total_alive):
+def build_message(selected, date_str, time_str, total_tested, total_alive):
+    """پست به سبک کانال‌های معروف (الگوی @flyv2ray): تیتر + بلاک کانفیگ + راهنما + فوتر."""
     lines = [
-        "⚡️ <b>کانفیگ‌های رایگان تست‌شده | امپرس</b>",
-        f"📅 {date_str}",
+        "👑 <b>امپرس | کانفیگ رایگان</b>",
+        f"📅 {date_str} • ⏰ {time_str}",
         "",
-        f"🧪 در آخرین بررسی {fa_num(total_tested)} کانفیگ آزموده شد؛ {fa_num(total_alive)} کانفیگ سالم بود.",
-        "🔧 سریع‌ترین‌ها (مرتب‌شده بر اساس تأخیر):",
+        "🔥 <b>تازه تست‌شده و سالم — مناسب v2rayNG و NPV Tunnel</b>",
         "",
     ]
-    for i, c in enumerate(selected):
-        lines.append(f"{NUM_EMOJI[i]} <b>{PROTO_LABEL[c['proto']]}</b> | ⏱ {fa(c['latency'])} ms")
+    for c in selected:
+        lines.append(f"⚡️ <b>{proto_title(c)}</b> | ⏱ پینگ {fa(c['latency'])} ms")
         lines.append(f"<code>{html.escape(c['link'], quote=False)}</code>")
         lines.append("")
-    lines.append(HASHTAGS)
+    lines.append("📲 <b>راهنمای سریع:</b>")
+    lines.append("۱️⃣ کانفیگ بالا را کپی کن")
+    lines.append("۲️⃣ v2rayNG ← دکمه ➕ ← Import config from clipboard")
+    lines.append("۳️⃣ NPV Tunnel ← دکمه ➕ ← Import Config")
+    lines.append("")
+    lines.append(f"⬇️ <a href=\"{APP_V2RAYNG_URL}\">دانلود v2rayNG</a> | "
+                 f"<a href=\"{APP_NPV_URL}\">دانلود NPV Tunnel</a>")
+    lines.append("🌟 کانفیگ را با دوستانت به اشتراک بگذار 👌")
+    lines.append("")
+    lines.append((HASHTAGS + " " + proto_hashtag(selected[0])) if selected else HASHTAGS)
     lines.append("")
     lines.append(FOOTER)
     return "\n".join(lines)
@@ -369,7 +406,10 @@ def tg_api(method, payload):
 
 def send_post(text):
     button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
-    keyboard = {"inline_keyboard": [[{"text": "📌 آموزش اتصال", "url": button_url}]]}
+    keyboard = {"inline_keyboard": [[
+        {"text": "📌 آموزش اتصال", "url": button_url},
+        {"text": "👑 شبکه امپرس", "url": NETWORK_URL},
+    ]]}
     payload = {
         "chat_id": CHANNEL_ID,
         "text": text,
@@ -505,26 +545,41 @@ def main():
         seen_host.add(hk)
     log(f"🆕 کاندیدهای جدید (پست‌نشده و غیرتکراری): {fa_num(len(candidates))}")
 
-    # ۵) انتخاب تا سقف ۵ کانفیگ با رعایت محدودیت ۴۰۹۶ کاراکتر تلگرام
+    # ۵) انتخاب کانفیگ‌ها: اولویت پروتکل (پیش‌فرض: اول بهترین VLESS) + سقف طول تلگرام
     date_str = jalali_date_str(now)
+    time_str = fa(now.strftime("%H:%M"))
+    by_proto = {}
+    for c in candidates:  # candidates از قبل بر اساس تأخیر مرتب‌اند
+        by_proto.setdefault(c["proto"], []).append(c)
+    order = [p for p in PROTO_PRIORITY if p in by_proto]
+    order += [p for p in by_proto if p not in order]
+
     selected = []
-    for c in candidates:
-        if len(selected) >= MAX_POST_CONFIGS:
+    slot = 0
+    while len(selected) < CONFIGS_PER_POST:
+        if not any(by_proto.values()):
             break
+        proto = order[slot % len(order)]
+        pool = by_proto.get(proto) or []
+        if not pool:
+            slot += 1  # این پروتکل کاندید نداشت؛ برو سراغ پروتکل بعدی
+            continue
+        c = pool.pop(0)
+        by_proto[proto] = pool
         trial = selected + [c]
-        if tg_len(build_message(trial, date_str, len(configs), len(healthy))) <= TG_LIMIT - TG_SAFETY:
+        if tg_len(build_message(trial, date_str, time_str, len(configs), len(healthy))) <= TG_LIMIT - TG_SAFETY:
             selected = trial
-        # else: این کانفیگ خیلی بلند است؛ سراغ کاندید بعدی می‌رویم
+        # else: این کانفیگ خیلی بلند است؛ دور انداختیم و سراغ پروتکل/کاندید بعدی می‌رویم
+        slot += 1
     if not selected:
         die("کاندیدی برای پست پیدا نشد (همه تکراری بودند یا هیچ‌کدام در محدودیت طول جا نشد).")
-    if len(selected) < MIN_POST_CONFIGS:
-        log(f"⚠️ فقط {fa(len(selected))} کانفیگ در محدودیت طول جا شد "
-            f"(کمتر از حد مطلوب {fa(MIN_POST_CONFIGS)}).")
+    if len(selected) < CONFIGS_PER_POST:
+        log(f"⚠️ فقط {fa(len(selected))} کانفیگ انتخاب شد (هدف: {fa(CONFIGS_PER_POST)}).")
     for i, c in enumerate(selected, 1):
-        log(f"   {i}. {PROTO_LABEL[c['proto']]} | {c['host']}:{c['port']} | "
+        log(f"   {i}. {proto_title(c)} | {c['host']}:{c['port']} | "
             f"{c['latency']}ms | طول لینک {len(c['link'])}")
 
-    message = build_message(selected, date_str, len(configs), len(healthy))
+    message = build_message(selected, date_str, time_str, len(configs), len(healthy))
     button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
     log(f"📏 طول پیام: {tg_len(message)} واحد از ۴۰۹۶")
     log(f"🔘 دکمه شیشه‌ای: [📌 آموزش اتصال] → {button_url}")
