@@ -1,0 +1,43 @@
+name: ضربان‌سنج (تشخیصی)
+
+# 🔍 این workflow فقط برای تشخیص است: هر ۳۰ دقیقه یک خط زمان به state/heartbeat.log اضافه می‌کند.
+# اگر خط‌های جدید در heartbeat.log ظاهر شدند یعنی کرون گیت‌هاب کار می‌کند؛
+# اگر ظاهر نشدند یعنی ران‌های زمان‌بندی‌شده این ریپو اصلاً اجرا نمی‌شوند.
+# بعد از رفع مشکل می‌توان این فایل را حذف کرد.
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: empress-heartbeat
+  cancel-in-progress: true
+
+jobs:
+  beat:
+    name: ثبت ضربان
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: دریافت کد از ریپو
+        uses: actions/checkout@v4
+
+      - name: ثبت زمان در state/heartbeat.log و کامیت
+        run: |
+          mkdir -p state
+          echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) beat" >> state/heartbeat.log
+          tail -200 state/heartbeat.log > state/heartbeat.tmp && mv state/heartbeat.tmp state/heartbeat.log
+          git config user.name "empress-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase origin "$GITHUB_REF_NAME" || true
+          git add state/heartbeat.log
+          if git diff --cached --quiet; then
+            echo "چیزی برای کامیت نبود."
+          else
+            git commit -m "heartbeat [skip ci]"
+            git push || true
+          fi

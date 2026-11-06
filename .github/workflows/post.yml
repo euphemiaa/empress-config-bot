@@ -22,7 +22,8 @@ permissions:
 
 concurrency:
   group: empress-post
-  cancel-in-progress: false
+  # اگر رانی گیر کرد یا منتظر رانر ماند، رانِ بعدی آن را کنسل می‌کند تا صف هرگز بلاک نشود.
+  cancel-in-progress: true
 
 jobs:
   post:
@@ -38,13 +39,46 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: اجرای ربات
+      - name: اجرای ربات (خروجی در run_output.log ذخیره می‌شود)
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           CHANNEL_LINK: ${{ secrets.CHANNEL_LINK }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
-        run: python main.py
+        run: |
+          set -o pipefail
+          python main.py 2>&1 | tee run_output.log
+
+      # 🔍 اگر هر چیزی شکست خورد، دلیلش در state/error.json در ریپو ثبت می‌شود
+      # تا بدون دسترسی به لاگ Actions هم بتوانیم مشکل را از خود ریپو تشخیص دهیم.
+      - name: ثبت گزارش خطا در ریپو (فقط هنگام شکست)
+        if: failure()
+        run: |
+          git config user.name "empress-bot"
+          git config user.email "actions@users.noreply.github.com"
+          mkdir -p state
+          python3 - <<'PY'
+          import json, os, datetime, pathlib
+          tail = ""
+          p = pathlib.Path("run_output.log")
+          if p.exists():
+              tail = p.read_text(encoding="utf-8", errors="replace")[-3000:]
+          data = {
+              "failed_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+              "event": os.environ.get("GITHUB_EVENT_NAME", ""),
+              "output_tail": tail,
+          }
+          pathlib.Path("state/error.json").write_text(
+              json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+          PY
+          git pull --rebase origin "$GITHUB_REF_NAME" || true
+          git add state/error.json
+          if git diff --cached --quiet; then
+            echo "خطای جدیدی برای ثبت نبود."
+          else
+            git commit -m "ثبت گزارش خطای ران [skip ci]"
+            git push || true
+          fi
 
       - name: کامیت کردن فایل state (با [skip ci])
         if: ${{ !(inputs.dry_run) }}
