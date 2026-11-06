@@ -23,7 +23,8 @@
   DRY_RUN              1 = فقط پیش‌نمایش؛ بدون ارسال و بدون تغییر posted.json
   WORKERS              تعداد نخ‌های تست TCP (پیش‌فرض 40)
   TCP_TIMEOUT          تایم‌اوت تست به ثانیه (پیش‌فرض 3)
-  CONFIGS_PER_POST     تعداد کانفیگ در هر پست (پیش‌فرض 1 — سبک @flyv2ray؛ 2 تا 5 هم می‌شود)
+  CONFIGS_PER_POST     تعداد کانفیگ در هر پست (پیش‌فرض 3: بهترین VLESS + VMess + Trojan؛ 1 تا 5)
+  SUB_MAX_CONFIGS      تعداد کانفیگ در فایل سابسکریپشن (پیش‌فرض 100)
   PROTO_PRIORITY       اولویت پروتکل‌ها (پیش‌فرض vless,vmess,trojan,ss — یعنی اول بهترین VLESS)
   STATE_MAX_AGE_DAYS   عمر حافظه dedupe به روز (پیش‌فرض 10)
 
@@ -59,7 +60,8 @@ DRY_RUN = os.environ.get("DRY_RUN", "0").strip().lower() in ("1", "true", "yes",
 
 WORKERS = int(os.environ.get("WORKERS", "40"))
 TCP_TIMEOUT = float(os.environ.get("TCP_TIMEOUT", "3"))
-CONFIGS_PER_POST = max(1, int(os.environ.get("CONFIGS_PER_POST", "1")))
+CONFIGS_PER_POST = max(1, int(os.environ.get("CONFIGS_PER_POST", "3")))
+SUB_MAX_CONFIGS = max(1, int(os.environ.get("SUB_MAX_CONFIGS", "100")))
 PROTO_PRIORITY = [p for p in (x.strip().lower() for x in
                   os.environ.get("PROTO_PRIORITY", "vless,vmess,trojan,ss").split(",")) if p]
 STATE_MAX_AGE_DAYS = int(os.environ.get("STATE_MAX_AGE_DAYS", "10"))
@@ -71,6 +73,8 @@ TG_SAFETY = 64    # حاشیه امن برای محاسبه طول
 STATE_DIR = "state"
 POSTED_FILE = os.path.join(STATE_DIR, "posted.json")
 LAST_RUN_FILE = os.path.join(STATE_DIR, "last_run.json")
+SUB_FILE = os.path.join(STATE_DIR, "sub.txt")
+SUB_B64_FILE = os.path.join(STATE_DIR, "sub_base64.txt")
 
 TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))  # ایران دی‌سایور ندارد
 
@@ -606,6 +610,16 @@ def main():
         state["updated"] = now_iso
         save_state(state)
         log(f"💾 {fa(len(selected))} اثر جدید در state/posted.json ثبت شد.")
+
+        # ۸) سابسکریپشن اختصاصی امپرس (فاز ۲): بهترین کانفیگ‌های زنده؛ کاربر یک بار URL را
+        #    در v2rayNG/NPV Tunnel وارد می‌کند و همیشه کانفیگ تازه دارد.
+        sub_links = [c["link"] for c in healthy[:SUB_MAX_CONFIGS]]
+        sub_text = "\n".join(sub_links) + "\n"
+        with open(SUB_FILE, "w", encoding="utf-8") as f:
+            f.write(sub_text)
+        with open(SUB_B64_FILE, "w", encoding="utf-8") as f:
+            f.write(base64.b64encode(sub_text.encode("utf-8")).decode("ascii"))
+        log(f"📡 سابسکریپشن با {fa(len(sub_links))} کانفیگ زنده در state/sub.txt (و نسخه base64) به‌روز شد.")
 
     # آمار این ران (برای دیباگ در لاگ اکشنز)
     os.makedirs(STATE_DIR, exist_ok=True)
