@@ -1,10 +1,10 @@
 {
- "ran_at": "2026-11-07T14:51:56+03:30",
+ "ran_at": "2026-11-07T21:15:52+03:30",
  "dry_run": false,
- "parsed_unique": 9450,
- "targets": 6528,
- "alive": 5365,
- "candidates_new": 3087,
+ "parsed_unique": 9366,
+ "targets": 6454,
+ "alive": 5283,
+ "candidates_new": 3058,
  "posted": 8,
- "message_len": 2428
+ "message_len": 2726
 }
