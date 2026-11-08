@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T17:03:08+03:30",
+ "updated": "2026-11-08T20:17:50+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -847,6 +847,54 @@
    "proto": "trojan",
    "host": "188.114.98.0",
    "port": 443
+  },
+  "fe2928ddfb32afa8343cd27dd4730bc71f5df1fd": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vless",
+   "host": "rs3.univesalsrv.com",
+   "port": 443
+  },
+  "3bffe33d5bf2d357a7ceae9f0164642a7a83e6b3": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vless",
+   "host": "rs4.univesalsrv.com",
+   "port": 443
+  },
+  "b6549e7d49a94f338e18c690b5e8b2147b85ecd1": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vless",
+   "host": "bg5.univesalsrv.com",
+   "port": 443
+  },
+  "d342cf4a57c72d5d0f773d12ceace872fd2df578": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vless",
+   "host": "rs2.univesalsrv.com",
+   "port": 443
+  },
+  "ffcc240ab2cb61c46acc83b6dd40003bfe124e01": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vless",
+   "host": "md2.univesalsrv.com",
+   "port": 443
+  },
+  "2427998be7bd2a51b0ecf7ff49f592d0257d8e85": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vless",
+   "host": "md1.univesalsrv.com",
+   "port": 443
+  },
+  "5e2dd1ed712c36ce96d46ca408070cbef0c549fb": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "vmess",
+   "host": "172.66.0.1",
+   "port": 443
+  },
+  "54a05833a265f0a96ac41e37713e4f39eb8acaba": {
+   "ts": "2026-11-08T20:17:50+03:30",
+   "proto": "ss",
+   "host": "sql.popmintxo.cc",
+   "port": 43385
   }
  }
 }
