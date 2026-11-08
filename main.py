@@ -539,7 +539,7 @@ def build_message(selected, date_str, time_str, total_tested=0, total_alive=0):
     lines.append("📲 <b>راهنمای سریع:</b>")
     lines.append("۱️⃣ کانفیگ دلخواه را کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد")
     lines.append("۲️⃣ وصل نشد؟ کانفیگ بعدی را تست کن؛ برای تایم‌اوت گزینه Fragment را روشن کن")
-    lines.append("۳️⃣ 📡 <b>ساب کامل</b> (صدها کانفیگ سالم، هر ۹۰ دقیقه تازه): دکمه «ساب کامل» پایین پست ← URL را در تب Subscription اپ وارد کن")
+    lines.append("۳️⃣ 📡 <b>ساب کامل</b>: فایل پیوست All-Configs (صدها کانفیگ سالم) ← همه را کپی ← Import در اپ ← با دکمهٔ تست اپ سرور زندهٔ لحظه را پیدا کن")
     lines.append(f"📎 فایل پیوست پایین پست = همین {fa(len(selected))} کانفیگ برای کپی سریع")
     lines.append("")
     lines.append(f"⬇️ <a href=\"{APP_V2RAYNG_URL}\">دانلود v2rayNG</a> | "
@@ -675,6 +675,39 @@ def send_config_file(selected, date_str, time_str, reply_to=None):
         "در v2rayNG یا NPV Tunnel دکمه ➕ ← Import از کلیپ‌بورد\n\n"
         "👑 @EmpressConfig"
     )
+    return _upload_or_warn(content, filename, caption, reply_to)
+
+
+def send_sub_document(sub_links, date_str, time_str, reply_to=None):
+    """
+    📡 پیوست «ساب کامل» — همهٔ کانفیگ‌های تونل-تأییدشدهٔ همین ران.
+    این فایل مستقل از دسترسی عمومی ریپو کار می‌کند (اگر گیت‌هاب ریپو را خصوصی
+    کند یا raw در دسترس نباشد، کاربران کانال همچنان ساب کامل را از تلگرام می‌گیرند).
+    """
+    head = (
+        "👑 امپرس | ساب کامل — همهٔ کانفیگ‌های تونل-تأییدشده\n"
+        f"📅 {date_str} • ⏰ {time_str}\n"
+        f"{fa(len(sub_links))} کانفیگ «واقعاً زنده» (هر کانفیگ با تونل واقعی Xray تست شده)\n"
+        "روش استفاده: همهٔ خطوط را کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد\n"
+        "بعد در لیست با دکمهٔ تست اپ (رادار/پینگ) سرور زندهٔ لحظهٔ خودت را پیدا کن\n"
+        "🔗 نسخهٔ Subscription (اگر ریپو پابلیک باشد؛ هر ۹۰ دقیقه تازه می‌شود):\n"
+        + SUB_URL + "\n"
+        + "=" * 34 + "\n"
+    )
+    content = (head + "\n".join(sub_links) + "\n").encode("utf-8")
+    caption = (
+        f"📡 ساب کامل — {fa(len(sub_links))} کانفیگ سالمِ تست‌شده با تونل واقعی Xray\n\n"
+        "📲 فایل را باز کن ← انتخاب همه ← کپی ← در v2rayNG یا NPV Tunnel دکمه ➕ ← "
+        "Import از کلیپ‌بورد ← بعد با دکمهٔ تست اپ (رادار) سرور زنده را پیدا کن\n\n"
+        "💡 اگر یکی تایم‌اوت داد، ناراحت نشو؛ از بین صدها تای این فایل حتماً چندین سرور "
+        "زندهٔ قابل‌اتصال پیدا می‌شود — همه را Import کن و تست بزن\n\n"
+        "👑 @EmpressConfig"
+    )
+    return _upload_or_warn(content, "Empress-All-Configs.txt", caption, reply_to)
+
+
+def _upload_or_warn(content, filename, caption, reply_to):
+    """ارسال سند با مدیریت خطا؛ شکست پیوست فایل، پست اصلی را نمی‌کشد."""
     try:
         resp = tg_upload_document(content, filename, caption, reply_to=reply_to)
         if resp.get("ok"):
@@ -931,11 +964,16 @@ def main():
         resp = send_post(message)
         msg_id = resp.get("result", {}).get("message_id", "?")
         log(f"🎉 پست با موفقیت در کانال ارسال شد (message_id={msg_id})")
-        # ۶-ب) فایل پیوست همان کانفیگ‌ها (به‌صورت ریپلای به پست) — برای کپی سریع در هر دو اپ
-        file_ok = send_config_file(selected, date_str, time_str,
-                                   reply_to=msg_id if isinstance(msg_id, int) else None)
-        if file_ok:
+        reply_to = msg_id if isinstance(msg_id, int) else None
+        # ۶-ب) فایل پیوست همان کانفیگ‌ها — برای کپی سریع در هر دو اپ
+        if send_config_file(selected, date_str, time_str, reply_to=reply_to):
             log("📎 فایل پیوست Empress-Configs.txt هم ارسال شد.")
+        # ۶-ج) 📡 پیوست «ساب کامل»: همهٔ کانفیگ‌های تونل-تأییدشدهٔ همین ران مستقیماً در
+        #     تلگرام — مستقل از دسترسی عمومی ریپو (اگر گیت‌هاب ریپو را خصوصی/محدود کند
+        #     کاربران همچنان ساب کامل را دارند).
+        sub_links = [c["link"] for c in healthy[:SUB_MAX_CONFIGS]]
+        if send_sub_document(sub_links, date_str, time_str, reply_to=reply_to):
+            log(f"📡 فایل پیوست ساب کامل ({fa(len(sub_links))} کانفیگ) هم ارسال شد.")
         # ۷) ثبت در حافظه dedupe → workflow این فایل را با پیام [skip ci] کامیت می‌کند
         now_iso = now.isoformat(timespec="seconds")
         for c in selected:
@@ -948,7 +986,6 @@ def main():
 
         # ۸) سابسکریپشن اختصاصی امپرس (فاز ۲): بهترین کانفیگ‌های زنده؛ کاربر یک بار URL را
         #    در v2rayNG/NPV Tunnel وارد می‌کند و همیشه کانفیگ تازه دارد.
-        sub_links = [c["link"] for c in healthy[:SUB_MAX_CONFIGS]]
         sub_text = "\n".join(sub_links) + "\n"
         with open(SUB_FILE, "w", encoding="utf-8") as f:
             f.write(sub_text)
