@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T13:16:38+03:30",
+ "updated": "2026-11-08T13:19:07+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -757,6 +757,54 @@
    "proto": "trojan",
    "host": "162.159.253.41",
    "port": 443
+  },
+  "1fb344dd77e0ebd525c39efb14aa418844ed7e2d": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vless",
+   "host": "us.song69.fun",
+   "port": 443
+  },
+  "1d12827d0ccc9b30feffc48ee2cfd6e697b3966d": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vless",
+   "host": "book.jarbook.net",
+   "port": 443
+  },
+  "08d2795ae04a9822ed8d8ec505461e352184d53a": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vless",
+   "host": "d0f7fax.ch5.h1clayd.click",
+   "port": 443
+  },
+  "3e37a7dc0a79df6676e7b37bf6edae2d6f4493bc": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vless",
+   "host": "pl1.obxodvpn.us",
+   "port": 443
+  },
+  "7ff1a1e52328d78152981ada57f145dc6088ca05": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vless",
+   "host": "aiartstudios.best",
+   "port": 443
+  },
+  "cc117dec7f65d25177e93a5da70484dfacd8fcc7": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vless",
+   "host": "bg2.univesalsrv.com",
+   "port": 443
+  },
+  "d716d26ac5b7f2f9a760fb48a58c7b3dfbc40926": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "vmess",
+   "host": "172.67.190.164",
+   "port": 443
+  },
+  "37a52bf0aeec91fb6e92ca0a2af04135b68951ec": {
+   "ts": "2026-11-08T13:19:07+03:30",
+   "proto": "ss",
+   "host": "twichcom.plus-hit.ru",
+   "port": 1080
   }
  }
 }
