@@ -1,6 +1,13 @@
 name: امپرس | پست کانفیگ‌ها
 
 on:
+  # ⚡ هر push به master (به‌جز state و مستندات) یک ران فوری هم راه می‌اندازد
+  # تا استقرارِ تغییرات بلافاصله در کانال قابل راستی‌آزمایی باشد.
+  push:
+    branches: [master]
+    paths-ignore:
+      - "state/**"
+      - "**.md"
   schedule:
     # ⚠️ کرون گیت‌هاب همیشه با ساعت UTC است (تهران = UTC+3:30 و دی‌سایور ندارد)
     # هر ۹۰ دقیقه یک اجرا = ۱۶ پست در روز (دو خط کرون: نوبت اول دقیقه 23، نوبت دوم دقیقه 53)
@@ -39,12 +46,25 @@ jobs:
         with:
           python-version: "3.12"
 
+      # 🔥 موتور تست واقعی: برای هر کاندیدا یک پروسهٔ xray بالا می‌آید و HTTP
+      # واقعی از داخل تونل رد می‌شود؛ کانفیگ‌های «پورت باز ولی مُرده» حذف می‌شوند.
+      - name: دانلود موتور Xray برای تست واقعی پروتکل
+        run: |
+          mkdir -p bin
+          curl -sL -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip
+          unzip -o -q /tmp/xray.zip xray -d bin
+          chmod +x bin/xray
+          bin/xray version | head -1
+
       - name: اجرای ربات (خروجی در run_output.log ذخیره می‌شود)
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           CHANNEL_LINK: ${{ secrets.CHANNEL_LINK }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          WORKERS: "120"
+          XRAY_WORKERS: "60"
+          XRAY_TEST_LIMIT: "300"
         run: |
           set -o pipefail
           python main.py 2>&1 | tee run_output.log

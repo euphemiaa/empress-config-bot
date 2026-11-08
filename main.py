@@ -7,7 +7,10 @@
 کارها در هر اجرا (بدون هیچ کتابخانه خارجی — فقط پایتون استاندارد):
   ۱) دریافت لیست کانفیگ از منابع عمومی گیت‌هاب (SOURCES پایین فایل)
   ۲) دیکود base64 در صورت نیاز + پارس لینک‌های vmess / vless / trojan / ss
-  ۳) تست TCP به host:port هر سرور (ThreadPoolExecutor، پیش‌فرض ۴۰ ورکر، تایم‌اوت ۳ ثانیه)
+  ۳) تست TCP به host:port هر سرور (فیلتر اولیه) + تست واقعی پروتکل با موتور Xray:
+     برای هر کاندیدای برتر یک پروسهٔ xray با پروکسی SOCKS لوکال بالا می‌آید و یک
+     درخواست HTTP واقعی از داخل تونل رد می‌شود؛ کانفیگ‌های «پورت باز ولی مُرده»
+     (همان‌هایی که در ایران تایم‌اوت می‌دهند) این‌جا حذف می‌شوند
   ۴) حذف تکراری‌های پست‌شده با حافظه state/posted.json
   ۵) انتخاب ۸ کانفیگ در هر پست: اول ۶ تا بهترین VLESS، بعد ۲ تا از بقیه پروتکل‌ها
      (قابل تغییر با CONFIGS_PER_POST و VLESS_COUNT)
@@ -50,8 +53,11 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
+
+import xray_test  # تستر واقعی پروتکل با موتور Xray (هم‌پوشنه با همین فایل)
 
 # ------------------------- تنظیمات -------------------------
 
@@ -64,9 +70,17 @@ DRY_RUN = os.environ.get("DRY_RUN", "0").strip().lower() in ("1", "true", "yes",
 
 WORKERS = int(os.environ.get("WORKERS", "40"))
 TCP_TIMEOUT = float(os.environ.get("TCP_TIMEOUT", "3"))
+SUB_URL = (os.environ.get("SUB_URL", "").strip()
+           or "https://raw.githubusercontent.com/euphemiaa/empress-config-bot/master/state/sub_base64.txt")
+# ⚙️ موتور تست واقعی (Xray) — اگر باینری نبود، خودکار به تست TCP قدیمی برمی‌گردد
+XRAY_TEST = os.environ.get("XRAY_TEST", "1").strip().lower() in ("1", "true", "yes")
+XRAY_PATH = os.environ.get("XRAY_PATH", "bin/xray").strip()
+XRAY_TEST_LIMIT = max(0, int(os.environ.get("XRAY_TEST_LIMIT", "300")))
+XRAY_TIMEOUT = float(os.environ.get("XRAY_TIMEOUT", "9"))
+XRAY_WORKERS = max(1, int(os.environ.get("XRAY_WORKERS", "50")))
 CONFIGS_PER_POST = max(1, min(15, int(os.environ.get("CONFIGS_PER_POST", "8"))))
 VLESS_COUNT = max(0, int(os.environ.get("VLESS_COUNT", "6")))
-SUB_MAX_CONFIGS = max(1, int(os.environ.get("SUB_MAX_CONFIGS", "100")))
+SUB_MAX_CONFIGS = max(1, int(os.environ.get("SUB_MAX_CONFIGS", "300")))
 PROTO_PRIORITY = [p for p in (x.strip().lower() for x in
                   os.environ.get("PROTO_PRIORITY", "vless,vmess,trojan,ss").split(",")) if p]
 STATE_MAX_AGE_DAYS = int(os.environ.get("STATE_MAX_AGE_DAYS", "10"))
@@ -118,6 +132,14 @@ SOURCES = [
         "name": "0xRadikal/Free-v2ray-Configs (top100)",
         "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/top100.txt",
     },
+    {
+        "name": "mahdibland/V2RayAggregator (Eternity — تست‌شده)",
+        "url": "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/Eternity.txt",
+    },
+    {
+        "name": "mahdibland/V2RayAggregator (EternityAir — تست‌شده)",
+        "url": "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/EternityAir.txt",
+    },
 ]
 
 FOOTER = "👑 شبکه امپرس | 🆔 کانال اصلی: @EmpressNetwork"
@@ -132,21 +154,30 @@ PROTO_LABEL = {"vless": "VLESS", "vmess": "VMess", "trojan": "Trojan", "ss": "Sh
 NUM_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
 
 
-def proto_title(c):
-    """عنوان نمایشی پروتکل؛ برای vless/trojan نوع security هم می‌آید (مثل VLESS Reality)."""
+def proto_title(c, suffix=True):
+    """عنوان نمایشی پروتکل؛ برای vless/trojan نوع security هم می‌آید (مثل VLESS Reality).
+    با suffix=True نشان‌های ☁️CDN (پشت کلادفلر) و 🔁 (بازیافتی از پست قبلی) هم اضافه می‌شود."""
     label = PROTO_LABEL.get(c["proto"], c["proto"].upper())
     m = re.search(r"[?&]security=([a-z0-9]+)", c.get("link", ""), re.I)
+    title = label
     if m:
         sec = m.group(1).lower()
         if sec == "reality":
-            return label + " Reality"
-        if sec == "tls":
-            return label + " TLS"
-    return label
+            title = label + " Reality"
+        elif sec == "tls":
+            title = label + " TLS"
+    elif suffix and c.get("proto") == "vmess":
+        if str((c.get("vm") or {}).get("tls", "")).strip().lower() == "tls":
+            title = label + " TLS"
+    if suffix and is_cloudflare_ip(c.get("host", "")):
+        title += " ☁️CDN"
+    if suffix and c.get("reused"):
+        title = "🔁 " + title
+    return title
 
 
 def proto_hashtag(c):
-    t = re.sub(r"[^A-Za-z0-9_]", "_", proto_title(c).replace(" ", "_")).strip("_")
+    t = re.sub(r"[^A-Za-z0-9_]", "_", proto_title(c, suffix=False).replace(" ", "_")).strip("_")
     return "#" + t
 
 WEEKDAYS_FA = ["دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه", "یکشنبه"]
@@ -280,6 +311,7 @@ def parse_vmess(link):
                            sort_keys=True, ensure_ascii=False)
     return {"proto": "vmess", "link": link, "host": host, "port": port,
             "name": name, "fp_src": "vmess|" + canonical,
+            "vm": {k: v for k, v in data.items() if k != "ps"},
             "net": str(data.get("net", "tcp") or "tcp").strip().lower(),
             "sec": "tls" if str(data.get("tls", "")).strip().lower() in ("tls", "reality") else ""}
 
@@ -296,14 +328,11 @@ def parse_userinfo(scheme, link):
     name = urllib.parse.unquote(sp.fragment or "")
     canonical = urllib.parse.urlunsplit(
         (sp.scheme.lower(), sp.netloc, sp.path, sp.query, ""))  # بدون fragment
-    try:
-        q = urllib.parse.parse_qs(sp.query)
-        sec = (q.get("security") or [""])[0].strip().lower()
-        net = (q.get("type") or ["tcp"])[0].strip().lower() or "tcp"
-    except Exception:
-        sec, net = "", "tcp"
+    q = {k: v[0] for k, v in urllib.parse.parse_qs(sp.query).items()}
+    sec = (q.get("security") or "").strip().lower()
+    net = (q.get("type") or "tcp").strip().lower() or "tcp"
     return {"proto": scheme, "link": link, "host": host, "port": port,
-            "name": name, "fp_src": canonical, "net": net, "sec": sec}
+            "name": name, "fp_src": canonical, "net": net, "sec": sec, "q": q}
 
 
 def parse_ss(link):
@@ -327,8 +356,11 @@ def parse_ss(link):
     port = hp.port
     if not host or port is None or not (1 <= port <= 65535):
         return None
+    method, _, password = identity.partition(":")
     return {"proto": "ss", "link": link, "host": host, "port": port,
             "name": host, "fp_src": "ss|" + identity + "|" + hostport.lower(),
+            "method": urllib.parse.unquote(method),
+            "password": urllib.parse.unquote(password),
             "net": "tcp", "sec": ""}
 
 
@@ -505,10 +537,9 @@ def build_message(selected, date_str, time_str, total_tested=0, total_alive=0):
         lines.append(f"<code>{html.escape(c['link'], quote=False)}</code>")
         lines.append("")
     lines.append("📲 <b>راهنمای سریع:</b>")
-    lines.append("۱️⃣ کانفیگ دلخواه را کپی کن")
-    lines.append("۲️⃣ v2rayNG ← دکمه ➕ ← Import config from clipboard")
-    lines.append("۳️⃣ NPV Tunnel ← دکمه ➕ ← Import Config")
-    lines.append("💡 تایم‌اوت شد؟ تنظیمات v2rayNG ← گزینه Fragment را روشن کن، بعد تست بزن")
+    lines.append("۱️⃣ کانفیگ دلخواه را کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد")
+    lines.append("۲️⃣ وصل نشد؟ کانفیگ بعدی را تست کن؛ برای تایم‌اوت گزینه Fragment را روشن کن")
+    lines.append("۳️⃣ 📡 <b>ساب کامل</b> (صدها کانفیگ سالم، هر ۹۰ دقیقه تازه): دکمه «ساب کامل» پایین پست ← URL را در تب Subscription اپ وارد کن")
     lines.append(f"📎 فایل پیوست پایین پست = همین {fa(len(selected))} کانفیگ برای کپی سریع")
     lines.append("")
     lines.append(f"⬇️ <a href=\"{APP_V2RAYNG_URL}\">دانلود v2rayNG</a> | "
@@ -538,10 +569,15 @@ def tg_api(method, payload):
 
 def send_post(text):
     button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
-    keyboard = {"inline_keyboard": [[
-        {"text": "📌 آموزش اتصال", "url": button_url},
-        {"text": "👑 شبکه امپرس", "url": NETWORK_URL},
-    ]]}
+    keyboard = {"inline_keyboard": [
+        [
+            {"text": "📌 آموزش اتصال", "url": button_url},
+            {"text": "📡 ساب کامل", "url": SUB_URL},
+        ],
+        [
+            {"text": "👑 شبکه امپرس", "url": NETWORK_URL},
+        ],
+    ]}
     payload = {
         "chat_id": CHANNEL_ID,
         "text": text,
@@ -599,6 +635,8 @@ def build_attachment_text(selected, date_str, time_str):
         f"📅 {date_str} • ⏰ {time_str}\n"
         "هر خط = یک کانفیگ سالم — مناسب v2rayNG و NPV Tunnel\n"
         "کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد\n"
+        "📡 سابسکریپشن کامل (صدها کانفیگ سالم، هر ۹۰ دقیقه تازه):\n"
+        + SUB_URL + "\n"
         + "=" * 34 + "\n"
     )
     return head + "\n".join(c["link"] for c in selected) + "\n"
@@ -727,23 +765,89 @@ def main():
     if not healthy:
         die("هیچ سرور زنده‌ای پیدا نشد؛ کمی بعد دوباره اجرا کن.")
 
+    # ۳-ب) 🔥 تست واقعی پروتکل با موتور Xray — مرحلهٔ کلیدی ضد «تایم‌اوت در ایران».
+    # TCP فقط می‌فهمد پورت باز است؛ این‌جا تونل واقعی بسته می‌شود و HTTP واقعی از
+    # داخلش رد می‌شود. کانفیگ‌های «پورت باز ولی پروتکل مُرده» حذف می‌شوند.
+    engine, xray_tested_n, xray_alive_n = "tcp-only", 0, 0
+    xray_bin = None
+    for _cand_path in (XRAY_PATH, os.path.join(os.getcwd(), "xray"), "xray"):
+        if os.path.isfile(_cand_path) and os.access(_cand_path, os.X_OK):
+            xray_bin = _cand_path
+            break
+    if XRAY_TEST and xray_bin and healthy:
+        # انتخاب کاندیداها: بهترین‌ها از نظر امتیاز ایران‌پسند، با سهمیه برای هر پروتکل
+        caps = {"vless": 150, "vmess": 60, "trojan": 50, "ss": 40}
+        pools = {}
+        for c in healthy:
+            pools.setdefault(c["proto"], []).append(c)
+        protos_order = ([p for p in PROTO_PRIORITY if pools.get(p)]
+                        + [p for p in pools if p not in PROTO_PRIORITY])
+        pool_cands = []
+        while len(pool_cands) < XRAY_TEST_LIMIT and any(pools.get(p) for p in protos_order):
+            for p in protos_order:
+                if pools.get(p) and sum(1 for x in pool_cands if x["proto"] == p) < caps.get(p, 30):
+                    pool_cands.append(pools[p].pop(0))
+                if len(pool_cands) >= XRAY_TEST_LIMIT:
+                    break
+        log(f"🚀 تست واقعی با موتور Xray ({xray_bin}): {fa(len(pool_cands))} کاندیدای برتر، "
+            f"{fa(XRAY_WORKERS)} ورکر، تایم‌اوت {fa(int(XRAY_TIMEOUT))} ثانیه…")
+        t1 = time.monotonic()
+        results = xray_test.run_xray_tests(pool_cands, xray_bin,
+                                           workers=XRAY_WORKERS, timeout=XRAY_TIMEOUT)
+        xray_tested_n = len(pool_cands)
+        alive_list = []
+        for c, r in zip(pool_cands, results):
+            if r.get("ok"):
+                c["latency"] = r["ms"]          # تأخیر واقعی تونل
+                c["alive_via"] = "xray"
+                alive_list.append(c)
+            else:
+                c["alive_via"] = "dead:" + str(r.get("why", ""))[:40]
+        xray_alive_n = len(alive_list)
+        reasons = Counter(str(r.get("why", ""))[:40] for r in results if not r.get("ok"))
+        log(f"✅ تست Xray در {fa(int(time.monotonic() - t1))} ثانیه تمام شد → "
+            f"{fa(xray_alive_n)} کانفیگ واقعاً زنده (تونل واقعی + HTTP واقعی) از {fa(xray_tested_n)}")
+        if reasons:
+            log("   🔍 دلایل مرگ: " + ", ".join(f"{k}×{v}" for k, v in reasons.most_common(6)))
+        if alive_list:
+            healthy = alive_list
+            engine = "xray"
+            healthy.sort(key=lambda c: (-c["iran_score"], c["latency"], len(c["link"])))
+        if len(healthy) < CONFIGS_PER_POST:
+            tested_ids = {id(c) for c in pool_cands}
+            for c in configs:
+                if id(c) in tested_ids or c["latency"] is None:
+                    continue
+                c["alive_via"] = "tcp-only"
+                healthy.append(c)
+                if len(healthy) >= CONFIGS_PER_POST:
+                    break
+            log(f"⚠️ خروجی Xray کم بود؛ با بهترین‌های TCP تا {fa(len(healthy))} تکمیل شد.")
+    else:
+        log("⚠️ باینری Xray پیدا نشد (XRAY_PATH=" + XRAY_PATH + ") → فقط تست TCP انجام شد.")
+
     # ۴) فیلتر پست‌شده‌های قبلی + تنوع سرور
     state = load_state()
     prune_state(state)
     posted_fps = set(state.get("items", {}).keys())
     candidates = []
+    skipped_posted = []   # سالم‌های قبلاً پست‌شده؛ فقط اگر کاندید جدید کم آمد بازیافت می‌شوند
     seen_fp, seen_host = set(), set()
     for c in healthy:
         fp = c["fingerprint"]
-        if fp in posted_fps or fp in seen_fp:
+        if fp in seen_fp:
             continue
         hk = (c["host"], c["port"])
         if hk in seen_host:
             continue
+        if fp in posted_fps:
+            skipped_posted.append(c)
+            continue
         candidates.append(c)
         seen_fp.add(fp)
         seen_host.add(hk)
-    log(f"🆕 کاندیدهای جدید (پست‌نشده و غیرتکراری): {fa_num(len(candidates))}")
+    log(f"🆕 کاندیدهای جدید (پست‌نشده و غیرتکراری): {fa_num(len(candidates))} "
+        f"(رزرو بازیافت: {fa_num(len(skipped_posted))} پست‌شدهٔ سالم)")
 
     # ۵) انتخاب کانفیگ‌ها: اول VLESS_COUNT تا بهترین VLESS (پیش‌فرض ۶)، بعد بقیه اسلات‌ها
     #    از بقیه پروتکل‌ها به ترتیب اولویت — پیش‌فرض نهایی: ۸ کانفیگ = ۶ VLESS + ۲ دیگر
@@ -786,13 +890,28 @@ def main():
         by_proto[proto] = pool
         fits(c)
         slot += 1
+
+    # ۵-۳) اگر کاندید جدید کم آمد، بهترین‌های سالمِ پست‌شدهٔ قبلی را با نشان 🔁 بازیافت کن
+    reused_n = 0
+    if len(selected) < CONFIGS_PER_POST:
+        for c in skipped_posted:
+            if len(selected) >= CONFIGS_PER_POST:
+                break
+            if (c["host"], c["port"]) in seen_host:
+                continue
+            before = len(selected)
+            c["reused"] = True
+            fits(c)
+            reused_n += len(selected) - before
+        if reused_n:
+            log(f"🔁 {fa(reused_n)} کانفیگ از پست‌های قبلی بازیافت شد (کمبود کاندید جدید).")
     if not selected:
         die("کاندیدی برای پست پیدا نشد (همه تکراری بودند یا هیچ‌کدام در محدودیت طول جا نشد).")
     if len(selected) < CONFIGS_PER_POST:
         log(f"⚠️ فقط {fa(len(selected))} کانفیگ انتخاب شد (هدف: {fa(CONFIGS_PER_POST)}).")
     for i, c in enumerate(selected, 1):
         log(f"   {i}. {proto_title(c)} | {c['host']}:{c['port']} | "
-            f"{c['latency']}ms | امتیاز ایران {c['iran_score']:+d} | طول لینک {len(c['link'])}")
+            f"{c['latency']}ms | امتیاز ایران {c['iran_score']:+d} | {c.get('alive_via', '?')}")
 
     message = build_message(selected, date_str, time_str)
     button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
@@ -835,18 +954,24 @@ def main():
             f.write(sub_text)
         with open(SUB_B64_FILE, "w", encoding="utf-8") as f:
             f.write(base64.b64encode(sub_text.encode("utf-8")).decode("ascii"))
-        log(f"📡 سابسکریپشن با {fa(len(sub_links))} کانفیگ زنده در state/sub.txt (و نسخه base64) به‌روز شد.")
+        log(f"📡 سابسکریپشن با {fa(len(sub_links))} کانفیگ «واقعاً زنده» (تست تونل Xray) "
+            f"در state/sub.txt (و نسخه base64) به‌روز شد.")
 
     # آمار این ران (برای دیباگ در لاگ اکشنز)
     os.makedirs(STATE_DIR, exist_ok=True)
     stats = {
         "ran_at": now.isoformat(timespec="seconds"),
         "dry_run": DRY_RUN,
+        "engine": engine,
         "parsed_unique": len(configs),
         "targets": len(targets),
+        "alive_tcp": len(latency),
         "alive": len(healthy),
+        "xray_tested": xray_tested_n,
+        "xray_alive": xray_alive_n,
         "candidates_new": len(candidates),
         "posted": len(selected),
+        "reused": reused_n,
         "message_len": tg_len(message),
     }
     with open(LAST_RUN_FILE, "w", encoding="utf-8") as f:
