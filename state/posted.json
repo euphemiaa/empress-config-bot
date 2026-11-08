@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T11:17:21+03:30",
+ "updated": "2026-11-08T12:52:13+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -661,6 +661,54 @@
    "proto": "trojan",
    "host": "66.33.22.242",
    "port": 30797
+  },
+  "b1ad00172689f48a79a5805f83e56f927732c8a9": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vless",
+   "host": "us.song69.fun",
+   "port": 443
+  },
+  "7867a6903e41a6976b28d8a91f9229c0fb9778ff": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vless",
+   "host": "35295cx.us9.h1clayd.click",
+   "port": 443
+  },
+  "1507f68e29016b982e7fbdf0dd8188b55292102d": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vless",
+   "host": "0592efg.us9.h1clayd.click",
+   "port": 443
+  },
+  "9e56f428e4a58c40c16858e54aa75d3dc7b9f043": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vless",
+   "host": "book.jarbook.net",
+   "port": 443
+  },
+  "c0e353d1aea229d7caa9647c844c7a84e94f75b0": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vless",
+   "host": "e60833x.nl7.h1clayd.click",
+   "port": 443
+  },
+  "935c652187326012f5af1da909ee72c38f30371b": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vless",
+   "host": "15b171g.nl7.h1clayd.click",
+   "port": 443
+  },
+  "5a849f17c6d49aed16127237ff43f227f9b6eb22": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "vmess",
+   "host": "104.21.0.1",
+   "port": 2083
+  },
+  "8fb16cb53b5cf5eab30c242330a8c8442489d744": {
+   "ts": "2026-11-08T12:52:13+03:30",
+   "proto": "trojan",
+   "host": "104.19.229.21",
+   "port": 443
   }
  }
 }
