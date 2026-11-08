@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T20:17:50+03:30",
+ "updated": "2026-11-08T23:14:05+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -895,6 +895,54 @@
    "proto": "ss",
    "host": "sql.popmintxo.cc",
    "port": 43385
+  },
+  "21db3db7be6849cc097f8d5e54eacd853b704720": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vless",
+   "host": "book.jarbook.net",
+   "port": 443
+  },
+  "bdd7e40e60d1d1eb6c319fc6848f5e10a2d8adc2": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vless",
+   "host": "bg5.univesalsrv.com",
+   "port": 443
+  },
+  "6bb85665740524510e536dbaa6547fccdd348f7b": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vless",
+   "host": "rs4.univesalsrv.com",
+   "port": 443
+  },
+  "14be2308c4c19fe67b7493894d2668fe0c50b07c": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vless",
+   "host": "15c838x.de11.h1clayd.click",
+   "port": 443
+  },
+  "241c54fffff71fb6c09fc230c5a7f25cf14909c6": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vless",
+   "host": "md2.univesalsrv.com",
+   "port": 443
+  },
+  "64ea67ef239af781fe80cf615dd062f16fb04550": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vless",
+   "host": "de1.song69.fun",
+   "port": 443
+  },
+  "6b8f017bc9592e7c87fb0ea6faf5172ba49ad0a9": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vmess",
+   "host": "172.66.0.1",
+   "port": 443
+  },
+  "38390bef59fd455d26cbb0866c72edb6d945ed40": {
+   "ts": "2026-11-08T23:14:05+03:30",
+   "proto": "vmess",
+   "host": "104.27.0.1",
+   "port": 443
   }
  }
 }
