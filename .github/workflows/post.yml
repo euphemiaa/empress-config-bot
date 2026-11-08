@@ -84,6 +84,7 @@ jobs:
           CHANNEL_LINK: ${{ secrets.CHANNEL_LINK }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
           WORKERS: "120"
+          TCP_TIMEOUT: "5"          # پینگ‌های واقعی ایران: سرورهای ۳-۶ ثانیه‌ای هم زنده‌اند؛ ۳ ثانیه زیادی سخت‌گیر بود
           XRAY_WORKERS: "60"
           XRAY_TEST_LIMIT: "300"
         run: |

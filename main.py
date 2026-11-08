@@ -855,6 +855,44 @@ def send_post(text, selected=None):
     die(f"ارسال به تلگرام ناموفق بود → {last_err}\n{hint}")
 
 
+# ------------------------- نام‌گذاری برند کانفیگ‌های ساب -------------------------
+
+def brand_link(c, rank):
+    """🏷 نام نمایشی (remark) هر کانفیگ ساب را به «امپرس-۰۰۱ | Reality | CDN | 443» تبدیل
+    می‌کند تا کاربر موقع تست رادار در اپ، بهترین‌ها را همان اول تشخیص دهد.
+    فقط نام نمایشی عوض می‌شود (fragment برای vless/trojan/ss و فیلد ps برای vmess)؛
+    خود اتصال دست نمی‌خورد و اگر چیزی خراب شد لینک اصلی برگردانده می‌شود.
+    امپرس-۰۰۱ = بالاترین امتیاز ایران‌پسند بودن (Reality/کلادفلر/۴۴۳ + رأی کاربران)."""
+    link = c["link"]
+    try:
+        flags = []
+        m = re.search(r"[?&]security=([a-z0-9]+)", link, re.I)
+        sec = (m.group(1).lower() if m else c.get("sec")) or ""
+        if sec == "reality":
+            flags.append("Reality")
+        elif sec == "tls":
+            flags.append("TLS")
+        if is_cloudflare_ip(c.get("host", "")) or is_cloudflare_ip(c.get("rip", "")):
+            flags.append("CDN")
+        if c.get("port") == 443:
+            flags.append("443")
+        name = f"امپرس-{rank:03d}" + ((" | " + " | ".join(flags)) if flags else "")
+        if link.lower().startswith("vmess://"):
+            payload = link[len("vmess://"):]
+            dec = b64_decode_any(payload)
+            data = json.loads(dec) if dec else None
+            if not isinstance(data, dict):
+                return link
+            data["ps"] = name
+            enc = base64.b64encode(json.dumps(
+                data, ensure_ascii=False, separators=(",", ":")).encode("utf-8")).decode("ascii")
+            return "vmess://" + enc
+        base = link.split("#", 1)[0]
+        return base + "#" + urllib.parse.quote(name, safe="")
+    except Exception:
+        return link
+
+
 # ------------------------- فایل پیوست کانفیگ‌ها -------------------------
 
 def build_attachment_text(selected, date_str, time_str):
@@ -907,16 +945,22 @@ def send_config_file(selected, date_str, time_str, reply_to=None):
     return _upload_or_warn(content, filename, caption, reply_to)
 
 
-def send_sub_document(sub_links, date_str, time_str, reply_to=None):
+def send_sub_document(sub_links, date_str, time_str, reply_to=None, engine="tcp-only"):
     """
-    📡 پیوست «ساب کامل» — همهٔ کانفیگ‌های تونل-تأییدشدهٔ همین ران.
+    📡 پیوست «ساب کامل» — همهٔ کانفیگ‌های سالم همین ران.
     این فایل مستقل از دسترسی عمومی ریپو کار می‌کند (اگر گیت‌هاب ریپو را خصوصی
     کند یا raw در دسترس نباشد، کاربران کانال همچنان ساب کامل را از تلگرام می‌گیرند).
     """
+    if engine == "xray":
+        tested_line = "هر کانفیگ با تونل واقعی Xray تست شده است"
+    else:
+        tested_line = "هر کانفیگ با تست پورت/سرور از دیتاسنتر تست شده است"
     head = (
-        "👑 امپرس | ساب کامل — همهٔ کانفیگ‌های تونل-تأییدشده\n"
+        "👑 امپرس | ساب کامل — همهٔ کانفیگ‌های سالم همین ران\n"
         f"📅 {date_str} • ⏰ {time_str}\n"
-        f"{fa(len(sub_links))} کانفیگ «واقعاً زنده» (هر کانفیگ با تونل واقعی Xray تست شده)\n"
+        f"{fa(len(sub_links))} کانفیگ سالم ({tested_line})\n"
+        "🏷 نام هر کانفیگ = امپرس-ردیف + نشانه‌ها؛ امپرس-۰۰۱ یعنی بهترین شانس اتصال در ایران\n"
+        "   Reality=مقاوم در برابر فیلترینگ | CDN=پشت کلادفلر | 443=پورت امن\n"
         "روش استفاده: همهٔ خطوط را کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد\n"
         "بعد در لیست با دکمهٔ تست اپ (رادار/پینگ) سرور زندهٔ لحظهٔ خودت را پیدا کن\n"
         "🔗 نسخهٔ Subscription (اگر ریپو پابلیک باشد؛ هر ۹۰ دقیقه تازه می‌شود):\n"
@@ -925,11 +969,13 @@ def send_sub_document(sub_links, date_str, time_str, reply_to=None):
     )
     content = (head + "\n".join(sub_links) + "\n").encode("utf-8")
     caption = (
-        f"📡 ساب کامل — {fa(len(sub_links))} کانفیگ سالمِ تست‌شده با تونل واقعی Xray\n\n"
+        f"📡 ساب کامل — {fa(len(sub_links))} کانفیگ سالمِ تست‌شده\n\n"
         "📲 فایل را باز کن ← انتخاب همه ← کپی ← در v2rayNG یا NPV Tunnel دکمه ➕ ← "
         "Import از کلیپ‌بورد ← بعد با دکمهٔ تست اپ (رادار) سرور زنده را پیدا کن\n\n"
+        f"🏷 کانفیگ‌ها از بهترین به بعد مرتب‌اند: امپرس-۰۰۱ = بهترین شانس در ایران؛ "
+        "Reality و CDN و 443 یعنی مقاوم‌تر در برابر فیلترینگ\n\n"
         "💡 اگر یکی تایم‌اوت داد، ناراحت نشو؛ از بین صدها تای این فایل حتماً چندین سرور "
-        "زندهٔ قابل‌اتصال پیدا می‌شود — همه را Import کن و تست بزن\n\n"
+        "زندهٔ قابل‌اتصال پیدا می‌شود — همه را Import کن و تست بزن (پینگ‌های ۳ تا ۶ ثانیه‌ای هم اتصال سالم یعنی)\n\n"
         "👑 @EmpressConfig"
     )
     return _upload_or_warn(content, "Empress-All-Configs.txt", caption, reply_to)
@@ -1206,8 +1252,10 @@ def main():
         # ۶-ج) 📡 پیوست «ساب کامل»: همهٔ کانفیگ‌های تونل-تأییدشدهٔ همین ران مستقیماً در
         #     تلگرام — مستقل از دسترسی عمومی ریپو (اگر گیت‌هاب ریپو را خصوصی/محدود کند
         #     کاربران همچنان ساب کامل را دارند).
-        sub_links = [c["link"] for c in healthy[:SUB_MAX_CONFIGS]]
-        if send_sub_document(sub_links, date_str, time_str, reply_to=reply_to):
+        # 🏷 لینک‌های ساب با نام برند «امپرس-ردیف | نشانه‌ها» — رتبهٔ ۱ = بهترین شانس ایران
+        sub_links = [brand_link(c, i) for i, c in enumerate(healthy[:SUB_MAX_CONFIGS], 1)]
+        if send_sub_document(sub_links, date_str, time_str, reply_to=reply_to,
+                             engine=engine):
             log(f"📡 فایل پیوست ساب کامل ({fa(len(sub_links))} کانفیگ) هم ارسال شد.")
         # ۷) ثبت در حافظه dedupe → workflow این فایل را با پیام [skip ci] کامیت می‌کند
         now_iso = now.isoformat(timespec="seconds")
@@ -1226,8 +1274,8 @@ def main():
             f.write(sub_text)
         with open(SUB_B64_FILE, "w", encoding="utf-8") as f:
             f.write(base64.b64encode(sub_text.encode("utf-8")).decode("ascii"))
-        log(f"📡 سابسکریپشن با {fa(len(sub_links))} کانفیگ «واقعاً زنده» (تست تونل Xray) "
-            f"در state/sub.txt (و نسخه base64) به‌روز شد.")
+        log(f"📡 سابسکریپشن با {fa(len(sub_links))} کانفیگ سالم (موتور {engine}) "
+            f"با نام برند امپرس-ردیف در state/sub.txt (و نسخه base64) به‌روز شد.")
 
     # آمار این ران (برای دیباگ در لاگ اکشنز)
     os.makedirs(STATE_DIR, exist_ok=True)

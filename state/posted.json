@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T12:52:13+03:30",
+ "updated": "2026-11-08T13:16:38+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -708,6 +708,54 @@
    "ts": "2026-11-08T12:52:13+03:30",
    "proto": "trojan",
    "host": "104.19.229.21",
+   "port": 443
+  },
+  "a4b293669e0a66dbd8bf95d9ca7048f723e9dd0c": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vless",
+   "host": "rs2.univesalsrv.com",
+   "port": 443
+  },
+  "37f69a1e8f9f93d21a9136c8f7a59d08161e4b41": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vless",
+   "host": "api.noneok.com",
+   "port": 443
+  },
+  "b8c5ca494e12c92543070bc4b8895f6690c1c30a": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vless",
+   "host": "29656dx.de20.h1clayd.click",
+   "port": 443
+  },
+  "1e99134c04bf4a2d9707d4174e1dc86c9851bf92": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vless",
+   "host": "bg2.univesalsrv.com",
+   "port": 443
+  },
+  "0b0721164617f30baa11ca6004926c8efa136763": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vless",
+   "host": "pl1.obxodvpn.us",
+   "port": 443
+  },
+  "755b506163854b87f00b3705fb4552c8c6f21d71": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vless",
+   "host": "rs3.univesalsrv.com",
+   "port": 443
+  },
+  "6fb9b69ac920649853c0745a0bcb9db11fd3f3fc": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "vmess",
+   "host": "172.64.229.138",
+   "port": 2083
+  },
+  "4de6cf90077d7aef4e5d084181a6f7404e20f70d": {
+   "ts": "2026-11-08T13:16:38+03:30",
+   "proto": "trojan",
+   "host": "162.159.253.41",
    "port": 443
   }
  }
