@@ -83,7 +83,8 @@ SUB_B64_FILE = os.path.join(STATE_DIR, "sub_base64.txt")
 
 TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))  # ایران دی‌سایور ندارد
 
-# منابع کانفیگ — همه عمومی و رایگان (آخرین تست زنده: ۲۰۲۶-۱۱-۰۶)
+# منابع کانفیگ — همه عمومی و رایگان (آخرین تست زنده: ۲۰۲۶-۱۱-۰۷)
+# نکته: 0xRadikal پروژه‌ای مخصوص ایران است و کانفیگ‌های verified/top100 را خودش تست می‌کند.
 SOURCES = [
     {
         "name": "barry-far/V2ray-Config (All)",
@@ -108,6 +109,14 @@ SOURCES = [
     {
         "name": "MatinGhanbari/v2ray-configs (ss)",
         "url": "https://raw.githubusercontent.com/MatinGhanbari/v2ray-configs/main/subscriptions/filtered/subs/ss.txt",
+    },
+    {
+        "name": "0xRadikal/Free-v2ray-Configs (verified)",
+        "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/verified/configs.txt",
+    },
+    {
+        "name": "0xRadikal/Free-v2ray-Configs (top100)",
+        "url": "https://raw.githubusercontent.com/0xRadikal/Free-v2ray-Configs/main/top100.txt",
     },
 ]
 
@@ -270,7 +279,9 @@ def parse_vmess(link):
     canonical = json.dumps({k: v for k, v in data.items() if k != "ps"},
                            sort_keys=True, ensure_ascii=False)
     return {"proto": "vmess", "link": link, "host": host, "port": port,
-            "name": name, "fp_src": "vmess|" + canonical}
+            "name": name, "fp_src": "vmess|" + canonical,
+            "net": str(data.get("net", "tcp") or "tcp").strip().lower(),
+            "sec": "tls" if str(data.get("tls", "")).strip().lower() in ("tls", "reality") else ""}
 
 
 def parse_userinfo(scheme, link):
@@ -285,8 +296,14 @@ def parse_userinfo(scheme, link):
     name = urllib.parse.unquote(sp.fragment or "")
     canonical = urllib.parse.urlunsplit(
         (sp.scheme.lower(), sp.netloc, sp.path, sp.query, ""))  # بدون fragment
+    try:
+        q = urllib.parse.parse_qs(sp.query)
+        sec = (q.get("security") or [""])[0].strip().lower()
+        net = (q.get("type") or ["tcp"])[0].strip().lower() or "tcp"
+    except Exception:
+        sec, net = "", "tcp"
     return {"proto": scheme, "link": link, "host": host, "port": port,
-            "name": name, "fp_src": canonical}
+            "name": name, "fp_src": canonical, "net": net, "sec": sec}
 
 
 def parse_ss(link):
@@ -311,7 +328,8 @@ def parse_ss(link):
     if not host or port is None or not (1 <= port <= 65535):
         return None
     return {"proto": "ss", "link": link, "host": host, "port": port,
-            "name": host, "fp_src": "ss|" + identity + "|" + hostport.lower()}
+            "name": host, "fp_src": "ss|" + identity + "|" + hostport.lower(),
+            "net": "tcp", "sec": ""}
 
 
 def parse_link(link):
@@ -340,6 +358,103 @@ def tcp_ping(host, port):
             return max(1, int((time.monotonic() - t0) * 1000))
     except OSError:
         return None
+
+
+# ------------------------- امتیاز «ایران‌پسند بودن» -------------------------
+# ⚠️ واقعیت مهم: تست TCP از سرور خارج فقط «زنده بودن» سرور را می‌فهمد؛
+# فایروال ایران خیلی از این سرورها را از داخل بلاک/محوش می‌کند (حتی با پینگ خارجی سالم).
+# تجربهٔ میدانی می‌گوید از داخل ایران به این ترتیب شانس اتصال بیشتر است:
+#   ۱) VLESS Reality (مقاوم به DPI)  ۲) هر چیزی پشت کلادفلر با TLS  ۳) پورت‌های TLS
+# و بدترین حالت: IP خام بدون رمزنگاری روی پورت ۸۰ — اولین کسی که بلاک می‌شود.
+# پس انتخاب‌ها را با این امتیاز مرتب می‌کنیم (تست TCP همچنان انجام می‌شود؛ این فقط اولویت است).
+
+# بازه‌های رسمی IPv4 کلادفلر (cloudflare.com/ips-v4)
+_CF_V4_TEXT = (
+    "173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 "
+    "141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 "
+    "197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 "
+    "104.24.0.0/14 172.64.0.0/13 131.0.72.0/22"
+)
+
+
+def ip_to_int(ip):
+    """IPv4 معتبر → عدد صحیح؛ وگرنه None (دامنه و IPv6 این‌جا پاس نمی‌شوند)."""
+    parts = str(ip).split(".")
+    if len(parts) != 4:
+        return None
+    n = 0
+    for p in parts:
+        if not p.isdigit():
+            return None
+        v = int(p)
+        if v > 255:
+            return None
+        n = (n << 8) | v
+    return n
+
+
+def _cidr_bounds(cidr):
+    base, bits = cidr.split("/")
+    start = ip_to_int(base)
+    size = 1 << (32 - int(bits))
+    return start, start + size - 1
+
+
+CF_V4_RANGES = [b for b in (_cidr_bounds(c) for c in _CF_V4_TEXT.split()) if b[0] is not None]
+
+
+def is_cloudflare_ip(host):
+    h = str(host).strip("[]")
+    if h.lower().startswith("::ffff:"):  # IPv4-mapped IPv6
+        h = h[7:]
+    n = ip_to_int(h)
+    if n is None:
+        return False
+    return any(a <= n <= b for a, b in CF_V4_RANGES)
+
+
+TLS_PORTS = (443, 8443, 2053, 2083, 2087, 2096)          # پورت‌های HTTPS/کلادفلر-TLS
+PLAIN_PORTS = (80, 8080, 8880, 2052, 2082, 2086, 2095)    # پورت‌های بدون رمز کلادفلر
+WEB_TRANSPORTS = ("ws", "grpc", "httpupgrade", "xhttp", "splithttp")
+
+
+def iran_score(c):
+    """هرچه بالاتر، شانس اتصال از داخل ایران بیشتر (تخمینی، بر اساس تجربهٔ میدانی)."""
+    host = c["host"]
+    sec = c.get("sec")
+    if sec is None:  # پشتیبانی از لینک‌های بدون پارامتر ( fallback روی خود لینک)
+        m = re.search(r"[?&]security=([a-z0-9]+)", c["link"], re.I)
+        sec = m.group(1).lower() if m else ""
+    net = c.get("net")
+    if net is None:
+        m = re.search(r"[?&]type=([a-z0-9]+)", c["link"], re.I)
+        net = m.group(1).lower() if m else "tcp"
+    score = 0
+    if sec == "reality":
+        score += 50                      # مقاوم‌ترین در برابر DPI
+    elif sec == "tls":
+        score += 18
+    if is_cloudflare_ip(host):
+        score += 14                      # IP کلادفلر = پشت CDN؛ بلاکش یعنی بلاک نصف اینترنت
+    elif not re.match(r"^\d+\.\d+\.\d+\.\d+$", host):
+        score += 6                       # دامنه (به‌خصوص پشت CDN) بهتر از IP داده‌سنتری خام
+    if net in WEB_TRANSPORTS:
+        score += 8                       # ترنسپورت وب‌مانند شبیه ترافیک عادی HTTPS دیده می‌شود
+    if c["port"] in TLS_PORTS:
+        score += 8
+    elif c["port"] in PLAIN_PORTS:
+        score -= 6
+    raw_ip = str(host).strip("[]")
+    if raw_ip.lower().startswith("::ffff:"):
+        raw_ip = raw_ip[7:]
+    if ip_to_int(raw_ip) is not None and sec in ("", "none"):
+        if net in WEB_TRANSPORTS and is_cloudflare_ip(host):
+            score -= 2                   # کلادفلر + ws بدون TLS: هنوز قابل قبول
+        elif net in WEB_TRANSPORTS:
+            score -= 8                   # IP خام + ws بدون TLS
+        else:
+            score -= 18                  # IP خام + tcp بدون رمزنگاری = اولین قربانی فیلتر
+    return score
 
 
 # ------------------------- حافظه dedupe -------------------------
@@ -393,6 +508,7 @@ def build_message(selected, date_str, time_str, total_tested=0, total_alive=0):
     lines.append("۱️⃣ کانفیگ دلخواه را کپی کن")
     lines.append("۲️⃣ v2rayNG ← دکمه ➕ ← Import config from clipboard")
     lines.append("۳️⃣ NPV Tunnel ← دکمه ➕ ← Import Config")
+    lines.append("💡 تایم‌اوت شد؟ تنظیمات v2rayNG ← گزینه Fragment را روشن کن، بعد تست بزن")
     lines.append(f"📎 فایل پیوست پایین پست = همین {fa(len(selected))} کانفیگ برای کپی سریع")
     lines.append("")
     lines.append(f"⬇️ <a href=\"{APP_V2RAYNG_URL}\">دانلود v2rayNG</a> | "
@@ -604,7 +720,10 @@ def main():
     for c in configs:
         c["latency"] = latency.get((c["host"], c["port"]))
     healthy = [c for c in configs if c["latency"] is not None]
-    healthy.sort(key=lambda c: (c["latency"], len(c["link"])))
+    # مرتب‌سازی: اول امتیاز ایران‌پسند بودن (Reality/کلادفلر/TLS)، بعد تأخیر
+    for c in healthy:
+        c["iran_score"] = iran_score(c)
+    healthy.sort(key=lambda c: (-c["iran_score"], c["latency"], len(c["link"])))
     if not healthy:
         die("هیچ سرور زنده‌ای پیدا نشد؛ کمی بعد دوباره اجرا کن.")
 
@@ -673,7 +792,7 @@ def main():
         log(f"⚠️ فقط {fa(len(selected))} کانفیگ انتخاب شد (هدف: {fa(CONFIGS_PER_POST)}).")
     for i, c in enumerate(selected, 1):
         log(f"   {i}. {proto_title(c)} | {c['host']}:{c['port']} | "
-            f"{c['latency']}ms | طول لینک {len(c['link'])}")
+            f"{c['latency']}ms | امتیاز ایران {c['iran_score']:+d} | طول لینک {len(c['link'])}")
 
     message = build_message(selected, date_str, time_str)
     button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
