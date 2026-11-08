@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T23:14:05+03:30",
+ "updated": "2026-11-09T00:18:31+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -687,7 +687,7 @@
    "port": 443
   },
   "c0e353d1aea229d7caa9647c844c7a84e94f75b0": {
-   "ts": "2026-11-08T12:52:13+03:30",
+   "ts": "2026-11-09T00:18:31+03:30",
    "proto": "vless",
    "host": "e60833x.nl7.h1clayd.click",
    "port": 443
@@ -943,6 +943,48 @@
    "proto": "vmess",
    "host": "104.27.0.1",
    "port": 443
+  },
+  "8aa5bbe88137f3f11f2cada4fe07012bf29fa206": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "vless",
+   "host": "uk.song69.fun",
+   "port": 443
+  },
+  "95b5b086ef9824100d3fd56d8396aa32cb56bb7a": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "vless",
+   "host": "15b171g.nl7.h1clayd.click",
+   "port": 443
+  },
+  "73e3a6d68c1b1c7f044f33747c6a80ed38bbe108": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "vless",
+   "host": "book.jarbook.net",
+   "port": 443
+  },
+  "8c610d74917c0c9e2543c07f6e13653f9d7a5bb3": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "vless",
+   "host": "srv21.buddygpt.ru",
+   "port": 443
+  },
+  "f048fcdc33b8d7d9aabf1d2d3eed51bbb885048a": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "vless",
+   "host": "md5.univesalsrv.com",
+   "port": 443
+  },
+  "406657d329868bfbf24893c7f872536fcfa9a591": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "vless",
+   "host": "717252g.nl8.h1clayd.click",
+   "port": 443
+  },
+  "89dd7574a8987a7642aa02f5a139bf7059fbed41": {
+   "ts": "2026-11-09T00:18:31+03:30",
+   "proto": "ss",
+   "host": "mojtun.mlbaz.ir",
+   "port": 555
   }
  }
 }
