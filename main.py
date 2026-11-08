@@ -64,8 +64,6 @@ import xray_test  # تستر واقعی پروتکل با موتور Xray (هم�
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "").strip()
 CHANNEL_ID = os.environ.get("CHANNEL_ID", "").strip()
 CHANNEL_LINK = os.environ.get("CHANNEL_LINK", "").strip() or "https://t.me/EmpressConfig"
-# لینک پست آموزشی پین‌شده در کانال (پیش‌فرض؛ با متغیر TUTORIAL_URL قابل بازنویسی)
-TUTORIAL_URL = os.environ.get("TUTORIAL_URL", "").strip() or "https://t.me/EmpressConfig/21"
 DRY_RUN = os.environ.get("DRY_RUN", "0").strip().lower() in ("1", "true", "yes", "y")
 
 WORKERS = int(os.environ.get("WORKERS", "40"))
@@ -94,8 +92,26 @@ POSTED_FILE = os.path.join(STATE_DIR, "posted.json")
 LAST_RUN_FILE = os.path.join(STATE_DIR, "last_run.json")
 SUB_FILE = os.path.join(STATE_DIR, "sub.txt")
 SUB_B64_FILE = os.path.join(STATE_DIR, "sub_base64.txt")
+FEEDBACK_FILE = os.path.join(STATE_DIR, "feedback.json")
+TUTORIAL_FILE = os.path.join(STATE_DIR, "tutorial.json")
 
 TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))  # ایران دی‌سایور ندارد
+
+
+def tutorial_url():
+    """لینک پست آموزشی پین‌شده: اول متغیر TUTORIAL_URL، بعد message_id واقعی در
+    state/tutorial.json (همان پست آموزشی پین‌شدهٔ کانال)، بعد لینک کانال."""
+    env = os.environ.get("TUTORIAL_URL", "").strip()
+    if env:
+        return env
+    try:
+        with open(TUTORIAL_FILE, encoding="utf-8") as f:
+            mid = int(json.load(f).get("message_id") or 0)
+        if mid > 0:
+            return f"{(CHANNEL_LINK or 'https://t.me/EmpressConfig').rstrip('/')}/{mid}"
+    except Exception:
+        pass
+    return CHANNEL_LINK or "https://t.me/EmpressConfig"
 
 # منابع کانفیگ — همه عمومی و رایگان (آخرین تست زنده: ۲۰۲۶-۱۱-۰۷)
 # نکته: 0xRadikal پروژه‌ای مخصوص ایران است و کانفیگ‌های verified/top100 را خودش تست می‌کند.
@@ -466,10 +482,11 @@ def iran_score(c):
         score += 50                      # مقاوم‌ترین در برابر DPI
     elif sec == "tls":
         score += 18
-    if is_cloudflare_ip(host):
+    if is_cloudflare_ip(host) or is_cloudflare_ip(c.get("rip")):
         score += 14                      # IP کلادفلر = پشت CDN؛ بلاکش یعنی بلاک نصف اینترنت
     elif not re.match(r"^\d+\.\d+\.\d+\.\d+$", host):
         score += 6                       # دامنه (به‌خصوص پشت CDN) بهتر از IP داده‌سنتری خام
+    score += org_penalty(c.get("org"))   # جریمهٔ سرورهای داخل رنج بلاک/محدودشدهٔ ایران
     if net in WEB_TRANSPORTS:
         score += 8                       # ترنسپورت وب‌مانند شبیه ترافیک عادی HTTPS دیده می‌شود
     if c["port"] in TLS_PORTS:
@@ -487,6 +504,202 @@ def iran_score(c):
         else:
             score -= 18                  # IP خام + tcp بدون رمزنگاری = اولین قربانی فیلتر
     return score
+
+
+# ------------------------- تشخیص شرکت میزبان (ASN) و جریمهٔ رنج‌های بلاک ایران -------------------------
+# 🔑 ایدهٔ کلیدی ضد تایم‌اوت: فیلترینگ ایران رنج کامل برخی ارائه‌دهنده‌ها را بلاک/محدود
+# کرده است (شهرت‌ترین: Oracle Cloud؛ سپس DigitalOcean، Hetzner، Linode و Vultr).
+# این بلاک‌ها از بیرون ایران دیده نمی‌شوند (تست‌های ما سبز می‌شوند) ولی کاربر ایرانی
+# تایم‌اوت می‌گیرد. پس هویت واقعی هر سرور را پیدا می‌کنیم: اول DNS، بعد ip-api (رایگان)
+# و به کانفیگ‌های رنج‌های بدبخت جریمهٔ سنگینِ ترتیبی می‌دهیم (حذف کامل نمی‌شوند؛ فقط
+# وقتی جایگزین بهتر هست انتخاب نمی‌شوند).
+
+ORG_PENALTY = [
+    ("oracle", -45),        # Oracle Cloud: تقریباً همیشه از داخل ایران مرده است
+    ("digitalocean", -16),  # محدود/کند در ایران؛ فقط با TLS گاهی جواب می‌دهد
+    ("hetzner", -14),
+    ("linode", -12),
+    ("vultr", -12),
+    ("ovh", -10),
+]
+
+
+def org_penalty(org):
+    """جریمه بر اساس نام شرکت میزبان؛ بدترین تطبیق ملاک است."""
+    o = (org or "").lower()
+    if not o:
+        return 0
+    pen = 0
+    for kw, p in ORG_PENALTY:
+        if kw in o:
+            pen = min(pen, p)
+    return pen
+
+
+def resolve_v4(host):
+    """اولین IPv4 دامنه؛ اگر خودش IP بود همان را برمی‌گرداند؛ شکست → None."""
+    h = str(host).strip("[]")
+    if h.lower().startswith("::ffff:"):
+        h = h[7:]
+    if ip_to_int(h) is not None:
+        return h
+    try:
+        infos = socket.getaddrinfo(h, None, socket.AF_INET, socket.SOCK_STREAM)
+        return infos[0][4][0] if infos else None
+    except Exception:
+        return None
+
+
+IPAPI_BATCH = "http://ip-api.com/batch?fields=query,as,org"
+
+
+def fetch_orgs(ips):
+    """نام ASN/شرکت برای دسته‌های ۱۰۰تایی IP از ip-api؛ در دسترس نبود → دیکشنری خالی."""
+    out = {}
+    for i in range(0, len(ips), 100):
+        chunk = ips[i:i + 100]
+        for attempt in (1, 2):
+            try:
+                req = urllib.request.Request(
+                    IPAPI_BATCH, data=json.dumps(chunk).encode("utf-8"),
+                    headers={"Content-Type": "application/json",
+                             "User-Agent": "EmpressConfigBot/1.0"})
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    for row in json.loads(resp.read().decode("utf-8")):
+                        if isinstance(row, dict) and row.get("query"):
+                            out[row["query"]] = str(row.get("as") or row.get("org") or "")
+                break
+            except Exception as e:
+                if attempt == 2:
+                    log(f"⚠️ ip-api پاسخ نداد ({e})؛ جریمهٔ ASN این ران اعمال نمی‌شود.")
+                else:
+                    time.sleep(2)
+    return out
+
+
+def refine_with_dns(configs, limit=400):
+    """برای بهترین کاندیداها: DNS → ASN → امتیاز مجدد. نتیجه: سرورهای Oracle و
+    رفقایش به ته لیست می‌روند و کانفیگ‌های پشت کلادفلر (حتی با دامنه) پاداش می‌گیرند."""
+    top = configs[:limit]
+    hosts = sorted({c["host"] for c in top})
+    log(f"🌍 تشخیص هویت واقعی سرورها (DNS + ASN) برای {fa(len(hosts))} دامنه/IP برتر…")
+    t0 = time.monotonic()
+    rip = {}
+    with ThreadPoolExecutor(max_workers=min(WORKERS, 100)) as pool:
+        futs = {pool.submit(resolve_v4, h): h for h in hosts}
+        for fut in as_completed(futs):
+            rip[futs[fut]] = fut.result()
+    ips = sorted({ip for ip in rip.values() if ip})
+    orgs = fetch_orgs(ips)
+    changed = 0
+    for c in top:
+        c["rip"] = rip.get(c["host"])
+        c["org"] = orgs.get(c.get("rip") or "", "")
+        new = iran_score(c)
+        if new != c["iran_score"]:
+            changed += 1
+        c["iran_score"] = new
+    oracle_n = sum(1 for c in top if "oracle" in (c.get("org") or "").lower())
+    log(f"🌍 ASN: {fa(len(orgs))} IP شناسایی شد در {fa(int(time.monotonic() - t0))} ثانیه؛ "
+        f"امتیاز {fa(changed)} کانفیگ بازنگری شد؛ سرور Oracle: {fa(oracle_n)} عدد (به ته لیست می‌روند).")
+
+
+# ------------------------- بازخورد کاربران (👍/👎) — حقیقت‌سنج از داخل ایران -------------------------
+# تست از سرور خارج، فیلترینگ داخل ایران را نمی‌بیند؛ تنها معیار قابل‌اتکا رأی خود
+# کاربران است. هر پست دو ردیف دکمهٔ رأی دارد؛ هر ران، رأی‌های ثبت‌شده از طریق
+# getUpdates خوانده می‌شود، به رأی‌دهنده جواب می‌دهد و در state/feedback.json می‌نشیند.
+# ران بعدی همین رأی‌ها را به امتیاز هر کانفیگ اضافه می‌کند (حلقهٔ یادگیری ۹۰ دقیقه‌ای).
+
+FB_OK_W, FB_BAD_W, FB_CLAMP = 12, 15, 45
+_FB = {"offset": 0, "votes": {}}
+
+
+def load_feedback():
+    try:
+        with open(FEEDBACK_FILE, encoding="utf-8") as f:
+            d = json.load(f)
+        if isinstance(d, dict) and isinstance(d.get("votes"), dict):
+            d.setdefault("offset", 0)
+            return d
+    except Exception:
+        pass
+    return {"offset": 0, "votes": {}}
+
+
+def save_feedback(fb):
+    os.makedirs(STATE_DIR, exist_ok=True)
+    with open(FEEDBACK_FILE, "w", encoding="utf-8") as f:
+        json.dump(fb, f, ensure_ascii=False, indent=1)
+
+
+def prune_feedback(fb, days=14):
+    cutoff = (datetime.now(TEHRAN_TZ) - timedelta(days=days)).isoformat(timespec="seconds")
+    fb["votes"] = {k: v for k, v in fb["votes"].items()
+                   if str(v.get("last", "")) >= cutoff or not v.get("last")}
+
+
+def fb_delta(fp):
+    """وزن رأی کاربران برای یک اثر انگشت؛ بازهٔ [−۴۵، +۴۵]."""
+    v = _FB.get("votes", {}).get((fp or "")[:16])
+    if not v:
+        return 0
+    d = FB_OK_W * int(v.get("ok", 0)) - FB_BAD_W * int(v.get("bad", 0))
+    return max(-FB_CLAMP, min(FB_CLAMP, d))
+
+
+def process_feedback():
+    """رأی‌های جدید را می‌خواند، به رأی‌دهنده جواب می‌دهد و state را ذخیره می‌کند."""
+    global _FB
+    _FB = load_feedback()
+    prune_feedback(_FB)
+    if not BOT_TOKEN:
+        return 0
+    processed, offset = 0, int(_FB.get("offset", 0))
+    wanted = str(CHANNEL_ID).lstrip("@").lower()
+    for _page in range(12):
+        try:
+            resp = tg_api("getUpdates", {"offset": offset, "timeout": 0, "limit": 100,
+                                         "allowed_updates": ["callback_query"]})
+        except Exception as e:
+            log(f"⚠️ getUpdates ناموفق: {e}")
+            break
+        if not resp.get("ok"):
+            break
+        updates = resp.get("result") or []
+        if not updates:
+            break
+        for u in updates:
+            offset = max(offset, int(u.get("update_id", 0)) + 1)
+            cq = u.get("callback_query") or {}
+            m = re.match(r"^([ud]):([0-9a-f]{8,40})$", str(cq.get("data") or ""))
+            if not m:
+                continue
+            chat = ((cq.get("message") or {}).get("chat")) or {}
+            uname = str(chat.get("username") or "").lower()
+            cid = str(chat.get("id") or "")
+            if wanted not in (uname, cid):  # فقط رأی روی پست‌های خود کانال
+                continue
+            v = _FB["votes"].setdefault(m.group(2), {"ok": 0, "bad": 0, "last": ""})
+            v["ok" if m.group(1) == "u" else "bad"] += 1
+            v["last"] = datetime.now(TEHRAN_TZ).isoformat(timespec="seconds")
+            processed += 1
+            try:
+                tg_api("answerCallbackQuery", {
+                    "callback_query_id": cq.get("id"),
+                    "text": "✅ رأیت ثبت شد! رأی کاربران، انتخاب پست بعدی را برای ایران هوشمندتر می‌کند.",
+                })
+            except Exception:
+                pass
+    if processed:
+        _FB["offset"] = offset
+        save_feedback(_FB)
+        log(f"🗳 {fa(processed)} رأی تازه ثبت شد (مجموع کانفیگ‌های رأی‌دار: {fa(len(_FB['votes']))}).")
+    return processed
+
+
+def sortkey(c):
+    """کلید مرتب‌سازی نهایی: امتیاز ایران + رأی کاربران، بعد پینگ واقعی، بعد کوتاهی لینک."""
+    return (-(c["iran_score"] + fb_delta(c["fingerprint"])), c["latency"], len(c["link"]))
 
 
 # ------------------------- حافظه dedupe -------------------------
@@ -533,18 +746,21 @@ def build_message(selected, date_str, time_str, total_tested=0, total_alive=0):
     ]
     for i, c in enumerate(selected, 1):
         num = NUM_EMOJI[i - 1] if i <= len(NUM_EMOJI) else f"{fa(i)}‌."
-        lines.append(f"{num} ⚡️ <b>{proto_title(c)}</b> | ⏱ پینگ {fa(c['latency'])} ms")
+        trophy = " 🏆" if (c["iran_score"] + fb_delta(c["fingerprint"])) >= 58 else ""
+        lines.append(f"{num} ⚡️ <b>{proto_title(c)}</b>{trophy} | ⏱ پینگ {fa(c['latency'])} ms")
         lines.append(f"<code>{html.escape(c['link'], quote=False)}</code>")
         lines.append("")
+    lines.append("🏆 = بهترین شانس اتصال در ایران — اول این‌ها را تست کن")
     lines.append("📲 <b>راهنمای سریع:</b>")
-    lines.append("۱️⃣ کانفیگ دلخواه را کپی کن ← در اپ دکمه ➕ ← Import از کلیپ‌بورد")
-    lines.append("۲️⃣ وصل نشد؟ کانفیگ بعدی را تست کن؛ برای تایم‌اوت گزینه Fragment را روشن کن")
-    lines.append("۳️⃣ 📡 <b>ساب کامل</b>: فایل پیوست All-Configs (صدها کانفیگ سالم) ← همه را کپی ← Import در اپ ← با دکمهٔ تست اپ سرور زندهٔ لحظه را پیدا کن")
-    lines.append(f"📎 فایل پیوست پایین پست = همین {fa(len(selected))} کانفیگ برای کپی سریع")
+    lines.append("۱️⃣ کانفیگ را کپی کن ← در اپ ➕ ← Import از کلیپ‌بورد")
+    lines.append("۲️⃣ وصل نشد؟ بعدی را تست کن؛ Fragment را روشن کن — آموزش کامل: پست پین‌شده")
+    lines.append("۳️⃣ 🗳 به هر کانفیگ رأی 👍/👎 بده؛ رأی شما پست بعدی را هوشمندتر می‌کند")
+    lines.append("۴️⃣ 📡 <b>ساب کامل</b>: فایل All-Configs (صدها کانفیگ سالم) ← کپی ← Import ← با رادار اپ زنده‌ها را پیدا کن")
+    lines.append(f"📎 پیوست پایین پست = همین {fa(len(selected))} کانفیگ برای کپی سریع")
     lines.append("")
     lines.append(f"⬇️ <a href=\"{APP_V2RAYNG_URL}\">دانلود v2rayNG</a> | "
                  f"<a href=\"{APP_NPV_URL}\">دانلود NPV Tunnel</a>")
-    lines.append("🌟 کانفیگ را با دوستانت به اشتراک بگذار 👌")
+    lines.append("🌟 با دوستانت به اشتراک بگذار 👌")
     lines.append("")
     tags = []
     for c in selected:
@@ -567,17 +783,26 @@ def tg_api(method, payload):
         return json.loads(resp.read().decode("utf-8"))
 
 
-def send_post(text):
-    button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
-    keyboard = {"inline_keyboard": [
-        [
-            {"text": "📌 آموزش اتصال", "url": button_url},
-            {"text": "📡 ساب کامل", "url": SUB_URL},
-        ],
-        [
-            {"text": "👑 شبکه امپرس", "url": NETWORK_URL},
-        ],
-    ]}
+def send_post(text, selected=None):
+    """ارسال پست + دکمه‌ها؛ اگر selected بدهیم، دو ردیف دکمهٔ رأی 👍/👎 هم اضافه می‌شود."""
+    kb = []
+    if selected:
+        row_up, row_down = [], []
+        for i, c in enumerate(selected):
+            n = NUM_EMOJI[i] if i < len(NUM_EMOJI) else fa(i + 1)
+            fp = c["fingerprint"][:16]
+            row_up.append({"text": f"👍{n}", "callback_data": f"u:{fp}"})
+            row_down.append({"text": f"👎{n}", "callback_data": f"d:{fp}"})
+        kb.append(row_up)
+        kb.append(row_down)
+    kb.append([
+        {"text": "📌 آموزش اتصال", "url": tutorial_url()},
+        {"text": "📡 ساب کامل", "url": SUB_URL},
+    ])
+    kb.append([
+        {"text": "👑 شبکه امپرس", "url": NETWORK_URL},
+    ])
+    keyboard = {"inline_keyboard": kb}
     payload = {
         "chat_id": CHANNEL_ID,
         "text": text,
@@ -740,6 +965,9 @@ def main():
     if DRY_RUN:
         log("🧯 حالت DRY_RUN فعاله: فقط پیش‌نمایش، بدون ارسال و بدون تغییر posted.json")
 
+    # ۰) 🗳 خواندن رأی‌های 👍/👎 کاربران از ران قبلی (حلقهٔ بازخورد ایران)
+    fb_processed = process_feedback()
+
     # ۱) دریافت و پارس منابع
     configs = []
     for src in SOURCES:
@@ -794,7 +1022,7 @@ def main():
     # مرتب‌سازی: اول امتیاز ایران‌پسند بودن (Reality/کلادفلر/TLS)، بعد تأخیر
     for c in healthy:
         c["iran_score"] = iran_score(c)
-    healthy.sort(key=lambda c: (-c["iran_score"], c["latency"], len(c["link"])))
+    healthy.sort(key=sortkey)
     if not healthy:
         die("هیچ سرور زنده‌ای پیدا نشد؛ کمی بعد دوباره اجرا کن.")
 
@@ -845,7 +1073,7 @@ def main():
         if alive_list:
             healthy = alive_list
             engine = "xray"
-            healthy.sort(key=lambda c: (-c["iran_score"], c["latency"], len(c["link"])))
+            healthy.sort(key=sortkey)
         if len(healthy) < CONFIGS_PER_POST:
             tested_ids = {id(c) for c in pool_cands}
             for c in configs:
@@ -858,6 +1086,10 @@ def main():
             log(f"⚠️ خروجی Xray کم بود؛ با بهترین‌های TCP تا {fa(len(healthy))} تکمیل شد.")
     else:
         log("⚠️ باینری Xray پیدا نشد (XRAY_PATH=" + XRAY_PATH + ") → فقط تست TCP انجام شد.")
+
+    # ۳-ج) 🌍 بازبینی امتیاز با هویت واقعی ASN (Oracle/Hetzner/DO بلاک ایران؛ کلادفلر آزاد)
+    refine_with_dns(healthy, limit=400)
+    healthy.sort(key=sortkey)
 
     # ۴) فیلتر پست‌شده‌های قبلی + تنوع سرور
     state = load_state()
@@ -947,9 +1179,8 @@ def main():
             f"{c['latency']}ms | امتیاز ایران {c['iran_score']:+d} | {c.get('alive_via', '?')}")
 
     message = build_message(selected, date_str, time_str)
-    button_url = TUTORIAL_URL or CHANNEL_LINK or "https://t.me/EmpressConfig"
     log(f"📏 طول پیام: {tg_len(message)} واحد از ۴۰۹۶")
-    log(f"🔘 دکمه شیشه‌ای: [📌 آموزش اتصال] → {button_url}")
+    log(f"🔘 دکمه‌ها: [📌 آموزش اتصال] → {tutorial_url()} | رأی‌گیری 👍👎 برای {fa(len(selected))} کانفیگ")
 
     # ۶) ارسال یا پیش‌نمایش
     if DRY_RUN:
@@ -961,7 +1192,7 @@ def main():
         if not BOT_TOKEN or not CHANNEL_ID:
             die("BOT_TOKEN یا CHANNEL_ID تنظیم نشده. سکرت‌های گیت‌هاب را چک کن "
                 "(یا برای تست از DRY_RUN=1 استفاده کن).")
-        resp = send_post(message)
+        resp = send_post(message, selected)
         msg_id = resp.get("result", {}).get("message_id", "?")
         log(f"🎉 پست با موفقیت در کانال ارسال شد (message_id={msg_id})")
         reply_to = msg_id if isinstance(msg_id, int) else None
@@ -1009,6 +1240,7 @@ def main():
         "candidates_new": len(candidates),
         "posted": len(selected),
         "reused": reused_n,
+        "feedback_in": fb_processed,
         "message_len": tg_len(message),
     }
     with open(LAST_RUN_FILE, "w", encoding="utf-8") as f:
