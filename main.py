@@ -775,11 +775,11 @@ def build_message(selected, date_str, time_str, total_tested=0, total_alive=0):
 
 # ------------------------- ارسال به تلگرام -------------------------
 
-def tg_api(method, payload):
+def tg_api(method, payload, timeout=60):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/{method}"
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
@@ -811,7 +811,9 @@ def send_post(text, selected=None):
         "reply_markup": keyboard,
     }
     last_err = ""
-    for attempt in range(1, 4):
+    # 🛡 شبکهٔ رانر↔تلگرام گاهی لحظه‌ای قطع می‌شود؛ ۵ تلاش با بک‌افزایشی (تا ~۸۵ ثانیه)
+    backoff = (3, 6, 12, 25, 40)
+    for attempt in range(1, 6):
         try:
             resp = tg_api("sendMessage", payload)
             if resp.get("ok"):
@@ -836,7 +838,9 @@ def send_post(text, selected=None):
                 break  # تلاش مجدد بی‌فایده است
         except Exception as e:
             last_err = str(e)
-            time.sleep(3)
+            wait = backoff[min(attempt - 1, len(backoff) - 1)]
+            log(f"⚠️ خطای شبکه در ارسال (تلاش {fa(attempt)} از ۵): {e} → {fa(wait)} ثانیه صبر…")
+            time.sleep(wait)
     hints = {
         "401": "توکن بات اشتباه است (BOT_TOKEN) — از BotFather دوباره چک کن.",
         "403": "بات ادمین کانال نیست یا حق Post Messages ندارد.",
