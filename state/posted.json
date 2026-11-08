@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-08T13:19:07+03:30",
+ "updated": "2026-11-08T17:03:08+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -805,6 +805,48 @@
    "proto": "ss",
    "host": "twichcom.plus-hit.ru",
    "port": 1080
+  },
+  "21a82399f6bf1756082847c94b407207b24e89f2": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "vless",
+   "host": "rs5.univesalsrv.com",
+   "port": 443
+  },
+  "d445de318e8bcf2470d3ba22fd3f29d78fbdfa80": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "vless",
+   "host": "rs3.univesalsrv.com",
+   "port": 443
+  },
+  "4bee8c1c5979a4fcc78f6d44614e40d1b9737d84": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "vless",
+   "host": "book.jarbook.net",
+   "port": 443
+  },
+  "2298c36de3f280c3d204bdbe9e0b555ccc8b43e3": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "vless",
+   "host": "bg3.univesalsrv.com",
+   "port": 443
+  },
+  "6646c372a69aaba2dab03d5ff24f4f9a239b882f": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "vless",
+   "host": "rs2.univesalsrv.com",
+   "port": 443
+  },
+  "5292b29639684ff520aa648dbd5a5b80ec582145": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "vless",
+   "host": "bg4.univesalsrv.com",
+   "port": 443
+  },
+  "57737c786a240408246b31142cce3dbf9008498c": {
+   "ts": "2026-11-08T17:03:08+03:30",
+   "proto": "trojan",
+   "host": "188.114.98.0",
+   "port": 443
   }
  }
 }
