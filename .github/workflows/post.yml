@@ -48,13 +48,34 @@ jobs:
 
       # 🔥 موتور تست واقعی: برای هر کاندیدا یک پروسهٔ xray بالا می‌آید و HTTP
       # واقعی از داخل تونل رد می‌شود؛ کانفیگ‌های «پورت باز ولی مُرده» حذف می‌شوند.
+      # 🛡 مقاوم‌سازی: ۳ بار تلاش + نسخهٔ پین‌شدهٔ جایگزین + در بدترین حالت
+      #    ران با تست TCP ادامه پیدا می‌کند (continue-on-error) و پست قطع نمی‌شود.
       - name: دانلود موتور Xray برای تست واقعی پروتکل
+        continue-on-error: true
         run: |
           mkdir -p bin
-          curl -sL -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip
-          unzip -o -q /tmp/xray.zip xray -d bin
-          chmod +x bin/xray
-          bin/xray version | head -1
+          ok=0
+          for url in \
+            "https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip" \
+            "https://github.com/XTLS/Xray-core/releases/download/v26.10.31/Xray-linux-64.zip"; do
+            for i in 1 2 3; do
+              echo "تلاش دانلود Xray (نوبت $i) از: $url"
+              if curl -fL --retry 2 --retry-delay 3 -o /tmp/xray.zip "$url"; then
+                if unzip -o -q /tmp/xray.zip xray -d bin; then
+                  chmod +x bin/xray
+                  ok=1
+                  break
+                fi
+              fi
+              sleep 5
+            done
+            if [ "$ok" = "1" ]; then break; fi
+          done
+          if [ "$ok" = "1" ]; then
+            bin/xray version | head -1
+          else
+            echo "⚠️ دانلود Xray نشد؛ این ران فقط با تست TCP اجرا می‌شود (پست همچنان ارسال می‌شود)."
+          fi
 
       - name: اجرای ربات (خروجی در run_output.log ذخیره می‌شود)
         env:
