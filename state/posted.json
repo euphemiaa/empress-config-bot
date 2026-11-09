@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-09T04:27:56+03:30",
+ "updated": "2026-11-09T05:34:32+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -1032,6 +1032,48 @@
    "ts": "2026-11-09T04:27:56+03:30",
    "proto": "trojan",
    "host": "104.25.95.49",
+   "port": 443
+  },
+  "abbe10c65bb6638e7a5cd3f442691fe7636da8ce": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vless",
+   "host": "book.jarbook.net",
+   "port": 443
+  },
+  "9a28f0e994f1a2ff454bee3e8a6e4a5274aa6fc4": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vless",
+   "host": "nl.seizha.pro",
+   "port": 443
+  },
+  "08b370566b52c1cf4d8eb3f9b4e424955f29eeb0": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vless",
+   "host": "rs4.univesalsrv.com",
+   "port": 443
+  },
+  "134c0ed4e8a8f6e45e1cef86edab01be16ba546e": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vless",
+   "host": "49930ag.es8.h1clayd.click",
+   "port": 443
+  },
+  "e237d4fef07ca9cc3436e58311158b92c21e786a": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vless",
+   "host": "downloadchache1.song69.fun",
+   "port": 443
+  },
+  "a48eb6e82cc060ef3cd6484d9ffaea6a59b8fe02": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vless",
+   "host": "md1.univesalsrv.com",
+   "port": 443
+  },
+  "e62e54bda7e49a8caf02ee6bdd9a864fb4788da3": {
+   "ts": "2026-11-09T05:34:32+03:30",
+   "proto": "vmess",
+   "host": "104.18.42.163",
    "port": 443
   }
  }
