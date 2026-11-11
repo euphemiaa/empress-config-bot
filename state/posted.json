@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-11T20:43:36+03:30",
+ "updated": "2026-11-11T21:38:48+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -1635,7 +1635,7 @@
    "port": 12961
   },
   "dc6ff32d1f70188f1a941cfa2482b46829be2938": {
-   "ts": "2026-11-11T20:43:36+03:30",
+   "ts": "2026-11-11T21:38:48+03:30",
    "proto": "vless",
    "host": "tuns.rupfem.ir",
    "port": 8443
@@ -1675,6 +1675,48 @@
    "proto": "vmess",
    "host": "172.64.145.93",
    "port": 443
+  },
+  "1afa631401cd15a8b5fabf28ecd94abc76d7b4f8": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "vless",
+   "host": "961ec0g.nl13.h1clayd.click",
+   "port": 443
+  },
+  "6aca7fb910a724850844893574ffbd2308801fc9": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "vless",
+   "host": "717252g.nl8.h1clayd.click",
+   "port": 443
+  },
+  "721ef6f0a66d85c9e7d5479c99613c759f1d555b": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "vless",
+   "host": "15b171g.nl7.h1clayd.click",
+   "port": 443
+  },
+  "1d79742bc075f59982c465c729746556fc5c0dea": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "vless",
+   "host": "guide.blog-forme.ru",
+   "port": 2087
+  },
+  "07cc1302715c8d21bee49d046b48e741d619dedd": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "vless",
+   "host": "95.140.152.173",
+   "port": 2083
+  },
+  "435fc52eb7ba1e0bf440418c385fadda6ccb7a77": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "vless",
+   "host": "212.41.9.190",
+   "port": 2053
+  },
+  "f70e5d128b53471a587cbe18a1dc8abd3b3bd14a": {
+   "ts": "2026-11-11T21:38:48+03:30",
+   "proto": "ss",
+   "host": "tuns.rupfem.ir",
+   "port": 8080
   }
  }
 }
