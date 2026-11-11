@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-11T11:57:32+03:30",
+ "updated": "2026-11-11T20:43:36+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -1633,6 +1633,48 @@
    "proto": "ss",
    "host": "mm.good2026.com",
    "port": 12961
+  },
+  "dc6ff32d1f70188f1a941cfa2482b46829be2938": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vless",
+   "host": "tuns.rupfem.ir",
+   "port": 8443
+  },
+  "68f4e54635d8c83737cc092029e82a575a65dc05": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vless",
+   "host": "md2.univesalsrv.com",
+   "port": 443
+  },
+  "0b65983a3e8166b100f6b678d1d48eaf1981d7cb": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vless",
+   "host": "95.85.231.3",
+   "port": 2087
+  },
+  "755ab3ef6f29bf303021105097e54b06d94de1ab": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vless",
+   "host": "79.182.70.212",
+   "port": 443
+  },
+  "1ad2d03f529e21f5101dc3fea72e8f0ca0431a3e": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vless",
+   "host": "xray2-direct-mci1-fs-ce.freesocks.work",
+   "port": 443
+  },
+  "7be5e6c5eb4cdc82605c61a8df66e6e0af78b957": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vless",
+   "host": "jdvymxi.cvewfjg.shop",
+   "port": 443
+  },
+  "b30de8f89ac3bbff7827e927e7bca9c3f24e96be": {
+   "ts": "2026-11-11T20:43:36+03:30",
+   "proto": "vmess",
+   "host": "172.64.145.93",
+   "port": 443
   }
  }
 }
