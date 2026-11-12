@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-12T05:12:09+03:30",
+ "updated": "2026-11-12T12:22:37+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -1269,7 +1269,7 @@
    "port": 443
   },
   "8ee5e75f50504c3920acbce49d9fa5117ab6731d": {
-   "ts": "2026-11-11T11:57:32+03:30",
+   "ts": "2026-11-12T12:22:37+03:30",
    "proto": "vless",
    "host": "pl1.obxodvpn.us",
    "port": 443
@@ -1812,6 +1812,48 @@
    "ts": "2026-11-12T05:12:09+03:30",
    "proto": "ss",
    "host": "216.105.168.18",
+   "port": 443
+  },
+  "cbfed9a4d2b8d1b15e887ad02add2e2e1d864e32": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vless",
+   "host": "kkomi.kimzo.tr",
+   "port": 443
+  },
+  "acb4600fa770f754c7eb1796e77152ba3db15117": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vless",
+   "host": "md5.univesalsrv.com",
+   "port": 443
+  },
+  "c4329a2b5e9cda21cd53a9dababeb4cf5b5deb4b": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vless",
+   "host": "38917fx.es1.h1clayd.click",
+   "port": 443
+  },
+  "2043301d8d4a582291cade5346bb2023a17bcc63": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vless",
+   "host": "15b171g.nl7.h1clayd.click",
+   "port": 443
+  },
+  "190c7ef861e2439746e9d7d509e919f2f72d3ed4": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vless",
+   "host": "95.85.231.3",
+   "port": 2087
+  },
+  "fdd1ee508c80b80865ddcabd45d63f8c5d1d330b": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vless",
+   "host": "80.96.108.29",
+   "port": 8443
+  },
+  "027b9df0c4a4f1bfa2e67dbbbb5f287760b6fc05": {
+   "ts": "2026-11-12T12:22:37+03:30",
+   "proto": "vmess",
+   "host": "172.67.190.164",
    "port": 443
   }
  }
