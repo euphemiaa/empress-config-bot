@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-14T21:42:09+03:30",
+ "updated": "2026-11-15T00:28:39+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -2484,6 +2484,54 @@
    "ts": "2026-11-14T21:42:09+03:30",
    "proto": "vless",
    "host": "196.245.153.104",
+   "port": 443
+  },
+  "0a76b6eab4ec195438737f47083a5d55fadcf08b": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vless",
+   "host": "coughed-gongs.freevideochats.org",
+   "port": 443
+  },
+  "8140fda07b7c5b029a8308917e02b4c91b028556": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vless",
+   "host": "homestead-walloping.sports-streams.org",
+   "port": 443
+  },
+  "187572104b79787f28f9c5548d7bb36ff9f97d91": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vless",
+   "host": "0592efg.us8.h1clayd.click",
+   "port": 443
+  },
+  "130eec6eb391079072ee42630764cac197cb869e": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vless",
+   "host": "162.216.231.214",
+   "port": 443
+  },
+  "3e62fca59f48a493d1b2c1d3d7dff2eb9ac6737b": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vless",
+   "host": "200.165.236.84",
+   "port": 443
+  },
+  "4311750d8cb14c0e7a0d858640a4256ac1c890be": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vless",
+   "host": "87.120.106.95",
+   "port": 443
+  },
+  "b71973725709e77b4947816da84fd9ba50c3fb10": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vmess",
+   "host": "104.17.77.77",
+   "port": 8443
+  },
+  "7a9a5cedfedc16ef5c96c6c9eb3a949bbb2b4a5a": {
+   "ts": "2026-11-15T00:28:39+03:30",
+   "proto": "vmess",
+   "host": "104.25.200.220",
    "port": 443
   }
  }
