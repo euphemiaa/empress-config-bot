@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-15T00:28:39+03:30",
+ "updated": "2026-11-15T02:00:32+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -2533,6 +2533,54 @@
    "proto": "vmess",
    "host": "104.25.200.220",
    "port": 443
+  },
+  "afcb862bb64592928b317e3d9fb9e2e9b42ef43c": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vless",
+   "host": "fr.abbaas.net",
+   "port": 8443
+  },
+  "1593ae1a76289b92fef06f531c378e006986ade1": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vless",
+   "host": "guide.blog-forme.ru",
+   "port": 2087
+  },
+  "316e671e059333b074504ef758730b6799f17045": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vless",
+   "host": "0592efg.us8.h1clayd.click",
+   "port": 443
+  },
+  "dc79faf799ca745b9ba3c5db9f750efdfec681a1": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vless",
+   "host": "ec7a81g.de19.h1clayd.click",
+   "port": 443
+  },
+  "333e64af74e4d2f6f9cade18f1539865c3d73eff": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vless",
+   "host": "95.85.231.3",
+   "port": 2087
+  },
+  "27d92223303ab2d63ef9e910c8e60e7fe7f02904": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vless",
+   "host": "201.8.71.230",
+   "port": 443
+  },
+  "0d7019065f406c8238c44e21db4b353d89686584": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "vmess",
+   "host": "188.114.96.3",
+   "port": 8443
+  },
+  "c9fc906b672b201fee851989a9b14ef50e400fd0": {
+   "ts": "2026-11-15T02:00:32+03:30",
+   "proto": "ss",
+   "host": "glance.asuscomm.com",
+   "port": 10099
   }
  }
 }
