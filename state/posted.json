@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-14T11:37:43+03:30",
+ "updated": "2026-11-14T14:05:19+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -2371,6 +2371,54 @@
    "proto": "vmess",
    "host": "104.21.91.53",
    "port": 8443
+  },
+  "af589d8dfbbace11ac6725d85ae64e95d68ec333": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vless",
+   "host": "summit.blog-forme.ru",
+   "port": 2087
+  },
+  "ed2115436c3a72d6137442cf5c6cc9541caa28ef": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vless",
+   "host": "38917fx.es1.h1clayd.click",
+   "port": 443
+  },
+  "d7773f7282f14ad499ebf5118fd51ec9b17509f1": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vless",
+   "host": "80cb66x.nl13.h1clayd.click",
+   "port": 443
+  },
+  "9836ddd77260d08f31017aaff0f440d08e2c57b6": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vless",
+   "host": "5.230.209.149",
+   "port": 443
+  },
+  "f1838cba4979cb24c07c8c4ddfcbf48f09970f79": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vless",
+   "host": "157.173.30.204",
+   "port": 443
+  },
+  "212e9122712f07865346177bd8e2ebfdcd7ea63f": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vless",
+   "host": "217.60.27.93",
+   "port": 443
+  },
+  "850f04906236b4c438acbfee4d5091b4f03a470c": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "vmess",
+   "host": "172.67.167.78",
+   "port": 8443
+  },
+  "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
+   "ts": "2026-11-14T14:05:19+03:30",
+   "proto": "ss",
+   "host": "pl134.vpnbook.com",
+   "port": 443
   }
  }
 }
