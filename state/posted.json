@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-15T15:49:32+03:30",
+ "updated": "2026-11-15T19:55:05+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -2719,6 +2719,54 @@
    "proto": "ss",
    "host": "frr.drwrdoh.org",
    "port": 8086
+  },
+  "e04c94fedc8b694154d6a624952add5b55780d05": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vless",
+   "host": "fr.abbaas.net",
+   "port": 8443
+  },
+  "d03d9cf466b4646a6fa1438432f99756abe0b3d1": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vless",
+   "host": "ec7a81g.de15.h1clayd.click",
+   "port": 443
+  },
+  "7d3f5c5250a75f0d756dd8078b96e49ff5ab48fe": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vless",
+   "host": "guide.blog-forme.ru",
+   "port": 2087
+  },
+  "dba3e58e2d7184de267fbc27840a83e7c08db9b8": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vless",
+   "host": "143.246.211.240",
+   "port": 443
+  },
+  "fd8b0e47e51c591cd697247f8ae59b8bdf2568d8": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vless",
+   "host": "79.182.39.138",
+   "port": 443
+  },
+  "80f0f46fcd86fa11216b8e8283b6c635206b2b49": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vless",
+   "host": "132.243.163.154",
+   "port": 443
+  },
+  "ff48feac3e17be0c8599588044d4058cf4b88f5b": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "vmess",
+   "host": "172.67.190.164",
+   "port": 443
+  },
+  "fa73499603f2d471a9a9c00b6f9107bdd094014d": {
+   "ts": "2026-11-15T19:55:05+03:30",
+   "proto": "ss",
+   "host": "s5.abol.ahbpanel.ir",
+   "port": 80
   }
  }
 }
