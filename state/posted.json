@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-15T22:58:35+03:30",
+ "updated": "2026-11-16T02:24:40+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -2815,6 +2815,54 @@
    "proto": "ss",
    "host": "15.204.247.244",
    "port": 443
+  },
+  "6bf7ce27acab5238b0001508d527a00844624b94": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vless",
+   "host": "fr.abbaas.net",
+   "port": 8443
+  },
+  "7e1c3345e61a92b0ce12453e727b3dc97d0b33f1": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vless",
+   "host": "a566d1g.de18.h1clayd.click",
+   "port": 443
+  },
+  "6a05fac342ef62700afe955989cc8b70ae4991b7": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vless",
+   "host": "362c1eg.se1.h1clayd.click",
+   "port": 443
+  },
+  "244c886d48d74571187863326a3ecba720940944": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vless",
+   "host": "0592efg.us8.h1clayd.click",
+   "port": 443
+  },
+  "3d3f075127954b1075a7290a44a8892473016981": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vless",
+   "host": "38917fx.es9.h1clayd.click",
+   "port": 443
+  },
+  "7b1b387588a70e81c4720434f53153dd6de76892": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vless",
+   "host": "b3cd32g.es9.h1clayd.click",
+   "port": 443
+  },
+  "285c9d2ee5e1f8e1002b06fc15a12c3db181920e": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "vmess",
+   "host": "172.67.167.78",
+   "port": 8443
+  },
+  "ee220c09d08a6045d9ad145ab8f216e1e3d10120": {
+   "ts": "2026-11-16T02:24:40+03:30",
+   "proto": "trojan",
+   "host": "panel.autonetshop.ir",
+   "port": 14822
   }
  }
 }
