@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-16T03:03:59+03:30",
+ "updated": "2026-11-16T10:10:43+03:30",
  "items": {
   "ca73c1befa21758a1a3830622750233c89f6bb42": {
    "ts": "2026-11-06T15:39:21+03:30",
@@ -2910,6 +2910,54 @@
    "ts": "2026-11-16T03:03:59+03:30",
    "proto": "ss",
    "host": "156.146.38.169",
+   "port": 443
+  },
+  "0ff0cbb50e7b7d04d046499d98fcfcef9c1cd04b": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "vless",
+   "host": "fr.abbaas.net",
+   "port": 8443
+  },
+  "1b9b83542f76bd059d4bfa521bbf78729ef5a268": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "vless",
+   "host": "it.x8lab.org",
+   "port": 443
+  },
+  "7aabfd6e0d3dde5cfbab745d77102f617cb53539": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "vless",
+   "host": "de7-165.homelab-cdn.cloud",
+   "port": 443
+  },
+  "e70e674e02229997ea41a0d786334d1ec670005a": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "vless",
+   "host": "de7-164.homelab-cdn.cloud",
+   "port": 443
+  },
+  "1d02c046f1b6ee30739b8c35a0ebeac55b6708a0": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "vless",
+   "host": "de7-166.homelab-cdn.cloud",
+   "port": 443
+  },
+  "4de264b1ab791d64236e4af291e195f87a4ca939": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "vless",
+   "host": "362c1eg.se1.h1clayd.click",
+   "port": 443
+  },
+  "64ed152135c10003d0e22f6c268c8f6a23c79f6c": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "ss",
+   "host": "dlc.deltapc.digital",
+   "port": 11133
+  },
+  "b60a9a4282b7f8b4f811828137dedae68438a5fd": {
+   "ts": "2026-11-16T10:10:43+03:30",
+   "proto": "ss",
+   "host": "104.36.66.212",
    "port": 443
   }
  }
