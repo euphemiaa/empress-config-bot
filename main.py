@@ -945,13 +945,17 @@ def send_config_file(selected, date_str, time_str, reply_to=None):
     return _upload_or_warn(content, filename, caption, reply_to)
 
 
-def send_sub_document(sub_links, date_str, time_str, reply_to=None, engine="tcp-only"):
+def send_sub_document(sub_links, date_str, time_str, reply_to=None, engine="tcp-only",
+                      n_tunnel=None, n_pad=0):
     """
     📡 پیوست «ساب کامل» — همهٔ کانفیگ‌های سالم همین ران.
     این فایل مستقل از دسترسی عمومی ریپو کار می‌کند (اگر گیت‌هاب ریپو را خصوصی
     کند یا raw در دسترس نباشد، کاربران کانال همچنان ساب کامل را از تلگرام می‌گیرند).
     """
-    if engine == "xray":
+    if n_tunnel and n_pad:
+        tested_line = (f"{fa(n_tunnel)} کانفیگ با تونل واقعی Xray تأیید شده + "
+                       f"{fa(n_pad)} کانفیگ با تست پورت (رتبهٔ ۱ تا {fa(n_tunnel)} قوی‌ترند)")
+    elif engine == "xray":
         tested_line = "هر کانفیگ با تونل واقعی Xray تست شده است"
     else:
         tested_line = "هر کانفیگ با تست پورت/سرور از دیتاسنتر تست شده است"
@@ -974,7 +978,7 @@ def send_sub_document(sub_links, date_str, time_str, reply_to=None, engine="tcp-
         "Import از کلیپ‌بورد ← بعد با دکمهٔ تست اپ (رادار) سرور زنده را پیدا کن\n\n"
         f"🏷 کانفیگ‌ها از بهترین به بعد مرتب‌اند: امپرس-۰۰۱ = بهترین شانس در ایران؛ "
         "Reality و CDN و 443 یعنی مقاوم‌تر در برابر فیلترینگ\n\n"
-        "💡 اگر یکی تایم‌اوت داد، ناراحت نشو؛ از بین صدها تای این فایل حتماً چندین سرور "
+        "💡 اگر یکی تایم‌اوت داد، ناراحت نشو؛ از بین همهٔ کانفیگ‌های این فایل حتماً چندین سرور "
         "زندهٔ قابل‌اتصال پیدا می‌شود — همه را Import کن و تست بزن (پینگ‌های ۳ تا ۶ ثانیه‌ای هم اتصال سالم یعنی)\n\n"
         "👑 @EmpressConfig"
     )
@@ -1228,6 +1232,35 @@ def main():
         log(f"   {i}. {proto_title(c)} | {c['host']}:{c['port']} | "
             f"{c['latency']}ms | امتیاز ایران {c['iran_score']:+d} | {c.get('alive_via', '?')}")
 
+    # ۵-۴) 📡 ساخت لیست «ساب کامل» — مشترک بین حالت واقعی و پیش‌نمایش:
+    #   رتبهٔ ۱ تا N = کانفیگ‌های تونل-تأیید (تست واقعی Xray)؛ اگر موتور Xray فعال بود
+    #   و تعدادش از سقف فایل کمتر بود، با بهترین‌های تست‌پورت‌شده (TCP زنده، هرگز تونل-مُرده
+    #   نبوده‌اند) تا سقف SUB_MAX_CONFIGS پر می‌شود — تا فایل همیشه پر و مرتب بماند.
+    sub_pool = list(healthy)
+    n_pad = 0
+    if engine == "xray" and len(sub_pool) < SUB_MAX_CONFIGS:
+        already = {c["fingerprint"] for c in sub_pool}
+        pad_hosts = {(c["host"], c["port"]) for c in sub_pool}
+        pad = []
+        for c in configs:
+            if len(sub_pool) >= SUB_MAX_CONFIGS:
+                break
+            if not c.get("latency") or c.get("alive_via"):
+                continue  # فقط TCP-زنده‌های تست‌نشده با تونل (تست‌شده‌های مُرده دور ریخته می‌شوند)
+            if c["fingerprint"] in already or (c["host"], c["port"]) in pad_hosts:
+                continue
+            if c["fingerprint"] in posted_fps:
+                continue  # پست‌شده‌های قبلی وارد فایل نمی‌شوند تا ساب همیشه تازه بماند
+            pad.append(c)
+            already.add(c["fingerprint"])
+            pad_hosts.add((c["host"], c["port"]))
+        pad.sort(key=sortkey)
+        sub_pool.extend(pad)
+        n_pad = len(pad)
+        log(f"📡 ساب کامل: {fa(len(healthy))} تونل-تأیید + {fa(n_pad)} تست‌پورت مکمل = "
+            f"{fa(min(len(sub_pool), SUB_MAX_CONFIGS))} کانفیگ.")
+    sub_links = [brand_link(c, i) for i, c in enumerate(sub_pool[:SUB_MAX_CONFIGS], 1)]
+
     message = build_message(selected, date_str, time_str)
     log(f"📏 طول پیام: {tg_len(message)} واحد از ۴۰۹۶")
     log(f"🔘 دکمه‌ها: [📌 آموزش اتصال] → {tutorial_url()} | رأی‌گیری 👍👎 برای {fa(len(selected))} کانفیگ")
@@ -1253,9 +1286,9 @@ def main():
         #     تلگرام — مستقل از دسترسی عمومی ریپو (اگر گیت‌هاب ریپو را خصوصی/محدود کند
         #     کاربران همچنان ساب کامل را دارند).
         # 🏷 لینک‌های ساب با نام برند «امپرس-ردیف | نشانه‌ها» — رتبهٔ ۱ = بهترین شانس ایران
-        sub_links = [brand_link(c, i) for i, c in enumerate(healthy[:SUB_MAX_CONFIGS], 1)]
         if send_sub_document(sub_links, date_str, time_str, reply_to=reply_to,
-                             engine=engine):
+                             engine=engine, n_tunnel=min(len(healthy), len(sub_links)),
+                             n_pad=n_pad):
             log(f"📡 فایل پیوست ساب کامل ({fa(len(sub_links))} کانفیگ) هم ارسال شد.")
         # ۷) ثبت در حافظه dedupe → workflow این فایل را با پیام [skip ci] کامیت می‌کند
         now_iso = now.isoformat(timespec="seconds")
