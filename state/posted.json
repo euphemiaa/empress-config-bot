@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-17T07:27:49+03:30",
+ "updated": "2026-11-17T08:19:32+03:30",
  "items": {
   "ed3ca2430b4cf5f2dd82228460c466cba327c9ae": {
    "ts": "2026-11-07T13:51:34+03:30",
@@ -2844,6 +2844,54 @@
    "ts": "2026-11-17T07:27:49+03:30",
    "proto": "ss",
    "host": "173.244.56.6",
+   "port": 443
+  },
+  "fd5a0f008ad041aa8f723745afcf7fe9bce63f41": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vless",
+   "host": "fr.abbaas.net",
+   "port": 8443
+  },
+  "a6a924848e2d69cb659a274a403440b6e1e3441a": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vless",
+   "host": "ec7a81g.de19.h1clayd.click",
+   "port": 443
+  },
+  "94739f23f834f6bb86aa650f34d6421621353b4c": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vless",
+   "host": "media.study.golangwikito.cfd",
+   "port": 8443
+  },
+  "48f589dd803ec672f58b08b916550e920dc1cd53": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vless",
+   "host": "801a40g.de14.h1clayd.click",
+   "port": 443
+  },
+  "f0adaafd9639556357d3d78edaabd563d3b82282": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vless",
+   "host": "557e58g.pl8.h1clayd.click",
+   "port": 443
+  },
+  "7f2a972470e0cfcf66d355c0d8b7f2b096394cd3": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vless",
+   "host": "0592efg.us8.h1clayd.click",
+   "port": 443
+  },
+  "8419604fcff8522f254b16db50ccf4f75ca81f56": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "vmess",
+   "host": "172.67.161.144",
+   "port": 8443
+  },
+  "809da0ca247cb5d4cb37bdf68ce14cf2cf9a3db8": {
+   "ts": "2026-11-17T08:19:32+03:30",
+   "proto": "ss",
+   "host": "198.98.53.130",
    "port": 443
   }
  }
