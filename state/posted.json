@@ -1,150 +1,12 @@
 {
  "version": 1,
- "updated": "2026-11-18T12:45:46+03:30",
+ "updated": "2026-11-18T15:21:18+03:30",
  "items": {
-  "b1ad00172689f48a79a5805f83e56f927732c8a9": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "vless",
-   "host": "us.song69.fun",
-   "port": 443
-  },
-  "7867a6903e41a6976b28d8a91f9229c0fb9778ff": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "vless",
-   "host": "35295cx.us9.h1clayd.click",
-   "port": 443
-  },
-  "1507f68e29016b982e7fbdf0dd8188b55292102d": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "vless",
-   "host": "0592efg.us9.h1clayd.click",
-   "port": 443
-  },
-  "9e56f428e4a58c40c16858e54aa75d3dc7b9f043": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "vless",
-   "host": "book.jarbook.net",
-   "port": 443
-  },
   "c0e353d1aea229d7caa9647c844c7a84e94f75b0": {
    "ts": "2026-11-09T00:18:31+03:30",
    "proto": "vless",
    "host": "e60833x.nl7.h1clayd.click",
    "port": 443
-  },
-  "935c652187326012f5af1da909ee72c38f30371b": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "vless",
-   "host": "15b171g.nl7.h1clayd.click",
-   "port": 443
-  },
-  "5a849f17c6d49aed16127237ff43f227f9b6eb22": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "vmess",
-   "host": "104.21.0.1",
-   "port": 2083
-  },
-  "8fb16cb53b5cf5eab30c242330a8c8442489d744": {
-   "ts": "2026-11-08T12:52:13+03:30",
-   "proto": "trojan",
-   "host": "104.19.229.21",
-   "port": 443
-  },
-  "a4b293669e0a66dbd8bf95d9ca7048f723e9dd0c": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vless",
-   "host": "rs2.univesalsrv.com",
-   "port": 443
-  },
-  "37f69a1e8f9f93d21a9136c8f7a59d08161e4b41": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vless",
-   "host": "api.noneok.com",
-   "port": 443
-  },
-  "b8c5ca494e12c92543070bc4b8895f6690c1c30a": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vless",
-   "host": "29656dx.de20.h1clayd.click",
-   "port": 443
-  },
-  "1e99134c04bf4a2d9707d4174e1dc86c9851bf92": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vless",
-   "host": "bg2.univesalsrv.com",
-   "port": 443
-  },
-  "0b0721164617f30baa11ca6004926c8efa136763": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vless",
-   "host": "pl1.obxodvpn.us",
-   "port": 443
-  },
-  "755b506163854b87f00b3705fb4552c8c6f21d71": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vless",
-   "host": "rs3.univesalsrv.com",
-   "port": 443
-  },
-  "6fb9b69ac920649853c0745a0bcb9db11fd3f3fc": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "vmess",
-   "host": "172.64.229.138",
-   "port": 2083
-  },
-  "4de6cf90077d7aef4e5d084181a6f7404e20f70d": {
-   "ts": "2026-11-08T13:16:38+03:30",
-   "proto": "trojan",
-   "host": "162.159.253.41",
-   "port": 443
-  },
-  "1fb344dd77e0ebd525c39efb14aa418844ed7e2d": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vless",
-   "host": "us.song69.fun",
-   "port": 443
-  },
-  "1d12827d0ccc9b30feffc48ee2cfd6e697b3966d": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vless",
-   "host": "book.jarbook.net",
-   "port": 443
-  },
-  "08d2795ae04a9822ed8d8ec505461e352184d53a": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vless",
-   "host": "d0f7fax.ch5.h1clayd.click",
-   "port": 443
-  },
-  "3e37a7dc0a79df6676e7b37bf6edae2d6f4493bc": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vless",
-   "host": "pl1.obxodvpn.us",
-   "port": 443
-  },
-  "7ff1a1e52328d78152981ada57f145dc6088ca05": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vless",
-   "host": "aiartstudios.best",
-   "port": 443
-  },
-  "cc117dec7f65d25177e93a5da70484dfacd8fcc7": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vless",
-   "host": "bg2.univesalsrv.com",
-   "port": 443
-  },
-  "d716d26ac5b7f2f9a760fb48a58c7b3dfbc40926": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "vmess",
-   "host": "172.67.190.164",
-   "port": 443
-  },
-  "37a52bf0aeec91fb6e92ca0a2af04135b68951ec": {
-   "ts": "2026-11-08T13:19:07+03:30",
-   "proto": "ss",
-   "host": "twichcom.plus-hit.ru",
-   "port": 1080
   },
   "21a82399f6bf1756082847c94b407207b24e89f2": {
    "ts": "2026-11-08T17:03:08+03:30",
@@ -2785,6 +2647,48 @@
    "proto": "trojan",
    "host": "flawers.shop",
    "port": 54032
+  },
+  "1da31ea589d0629198538c14f6a1aaf2483467d2": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vless",
+   "host": "717252g.nl8.h1clayd.click",
+   "port": 443
+  },
+  "5c025b696656110d5abd5682fd190e223eb4068a": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vless",
+   "host": "191.217.254.18",
+   "port": 443
+  },
+  "ba8c5ded6ecfea27997725433fcf8ab0a5173060": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vless",
+   "host": "95.85.231.3",
+   "port": 2087
+  },
+  "68e2f9c2b3154cce95d197349e8820db36f0ae44": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vless",
+   "host": "185.112.56.83",
+   "port": 8443
+  },
+  "06cbacf298ca82c34843a6fb75dd2a9c297482a7": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vless",
+   "host": "37.114.37.192",
+   "port": 443
+  },
+  "b5d7666caa5d9f53ad22c4f43ae021ffdbb70141": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vless",
+   "host": "46.191.159.24",
+   "port": 443
+  },
+  "d716d26ac5b7f2f9a760fb48a58c7b3dfbc40926": {
+   "ts": "2026-11-18T15:21:18+03:30",
+   "proto": "vmess",
+   "host": "172.67.190.164",
+   "port": 443
   }
  }
 }
