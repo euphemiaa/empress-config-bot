@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-18T03:10:22+03:30",
+ "updated": "2026-11-18T04:29:38+03:30",
  "items": {
   "c90514ca4bb4a21e30aa669af2c307e9c856d9ba": {
    "ts": "2026-11-08T11:17:21+03:30",
@@ -2737,6 +2737,54 @@
    "proto": "vmess",
    "host": "104.18.42.163",
    "port": 443
+  },
+  "528c02d5fafc8f803b15d253071694bc7e72cfa4": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vless",
+   "host": "guide.blog-forme.ru",
+   "port": 2087
+  },
+  "5f33f8a08dc5d186963e7f16ce03facaeb50fd1a": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vless",
+   "host": "b3cd32g.es1.h1clayd.click",
+   "port": 443
+  },
+  "ed463ba569da2e7a68d1586397f5d720c75362c5": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vless",
+   "host": "77.239.102.240",
+   "port": 443
+  },
+  "e548cfeded80227be6b9c9fecd5b769310b71c57": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vless",
+   "host": "85.14.243.91",
+   "port": 8443
+  },
+  "7a8a485dd8db92a512b6e1c0c777ae4ea99401bf": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vless",
+   "host": "89.125.234.224",
+   "port": 443
+  },
+  "e7f7ace72b5ad821cf6d7efa958cd3909ed56c46": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vless",
+   "host": "72.56.41.59",
+   "port": 2083
+  },
+  "df9e69c0ba3bf31e26c90cef7f49a602db222d3e": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "vmess",
+   "host": "172.64.155.209",
+   "port": 8443
+  },
+  "e53c7e3ad0ac406b781b64abdf35e2a7cedb5afb": {
+   "ts": "2026-11-18T04:29:38+03:30",
+   "proto": "ss",
+   "host": "leviko-ca8416.shopingggg.ir",
+   "port": 8080
   }
  }
 }
