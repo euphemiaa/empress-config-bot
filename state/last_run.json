@@ -1,16 +1,16 @@
 {
- "ran_at": "2026-11-19T05:01:52+03:30",
+ "ran_at": "2026-11-19T06:07:35+03:30",
  "dry_run": false,
  "engine": "xray",
- "parsed_unique": 10228,
- "targets": 6864,
- "alive_tcp": 3374,
- "alive": 95,
+ "parsed_unique": 10129,
+ "targets": 6781,
+ "alive_tcp": 3300,
+ "alive": 86,
  "xray_tested": 300,
- "xray_alive": 95,
+ "xray_alive": 86,
  "candidates_new": 27,
  "posted": 8,
  "reused": 0,
  "feedback_in": 0,
- "message_len": 3790
+ "message_len": 3682
 }
