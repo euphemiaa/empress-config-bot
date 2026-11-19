@@ -1,103 +1,7 @@
 {
  "version": 1,
- "updated": "2026-11-19T00:08:03+03:30",
+ "updated": "2026-11-19T05:01:52+03:30",
  "items": {
-  "c0e353d1aea229d7caa9647c844c7a84e94f75b0": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "e60833x.nl7.h1clayd.click",
-   "port": 443
-  },
-  "8aa5bbe88137f3f11f2cada4fe07012bf29fa206": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "uk.song69.fun",
-   "port": 443
-  },
-  "95b5b086ef9824100d3fd56d8396aa32cb56bb7a": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "15b171g.nl7.h1clayd.click",
-   "port": 443
-  },
-  "73e3a6d68c1b1c7f044f33747c6a80ed38bbe108": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "book.jarbook.net",
-   "port": 443
-  },
-  "8c610d74917c0c9e2543c07f6e13653f9d7a5bb3": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "srv21.buddygpt.ru",
-   "port": 443
-  },
-  "f048fcdc33b8d7d9aabf1d2d3eed51bbb885048a": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "md5.univesalsrv.com",
-   "port": 443
-  },
-  "406657d329868bfbf24893c7f872536fcfa9a591": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "vless",
-   "host": "717252g.nl8.h1clayd.click",
-   "port": 443
-  },
-  "89dd7574a8987a7642aa02f5a139bf7059fbed41": {
-   "ts": "2026-11-09T00:18:31+03:30",
-   "proto": "ss",
-   "host": "mojtun.mlbaz.ir",
-   "port": 555
-  },
-  "bcd2f12526d2a088c0e7effc94a1fbd69113545a": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vless",
-   "host": "book.jarbook.net",
-   "port": 443
-  },
-  "1f8ed8733f73433dd590c9b546b577443875b4d0": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vless",
-   "host": "nl.seizha.pro",
-   "port": 443
-  },
-  "7982da4351f4580b77808614d59c65d76d55cce3": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vless",
-   "host": "bg4.univesalsrv.com",
-   "port": 443
-  },
-  "3f443bc8d2c97c006a729c3704050526b35c1374": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vless",
-   "host": "7cabc1g.de-p1.h1clayd.click",
-   "port": 443
-  },
-  "ad25ff1517ec3cca793ca1a2769385d168ce1e1d": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vless",
-   "host": "rs1.univesalsrv.com",
-   "port": 443
-  },
-  "99013a860473fdbe984fbc2896c5d935aba26b76": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vless",
-   "host": "rs5.univesalsrv.com",
-   "port": 443
-  },
-  "7c63b89429acc9189ab5f7945278b98b39a5a596": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "vmess",
-   "host": "104.17.77.77",
-   "port": 8443
-  },
-  "283576a04a6b44fd22f03e51572ca5c86d6e39ad": {
-   "ts": "2026-11-09T04:27:56+03:30",
-   "proto": "trojan",
-   "host": "104.25.95.49",
-   "port": 443
-  },
   "abbe10c65bb6638e7a5cd3f442691fe7636da8ce": {
    "ts": "2026-11-09T05:34:32+03:30",
    "proto": "vless",
@@ -2647,6 +2551,54 @@
    "proto": "trojan",
    "host": "187.52.45.183",
    "port": 54032
+  },
+  "b490adfc71bfa0730abc657ff24244c8603402e7": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vless",
+   "host": "206.1.103.79",
+   "port": 2053
+  },
+  "69044db4e7433d9ea90770c6f5ea1c2a7082e1e7": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vless",
+   "host": "37.9.4.62",
+   "port": 443
+  },
+  "3851ddf9e69c4f75da4650c971005a822b164984": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vless",
+   "host": "164.37.224.245",
+   "port": 443
+  },
+  "92f3488a8e7a1a0699c2059cdf0ce15a2d14536d": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vless",
+   "host": "164.37.224.51",
+   "port": 443
+  },
+  "8f717739b5babc2caa8db3953e31f9ed677f63e8": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vless",
+   "host": "153.52.85.184",
+   "port": 443
+  },
+  "69632d6c3a8fd532fd01eb5fbb70af5f73615354": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vless",
+   "host": "79.182.70.199",
+   "port": 443
+  },
+  "cc7c93dfc0922b43604a5dc509dc9b3c5777fd1a": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "vmess",
+   "host": "172.64.155.209",
+   "port": 8443
+  },
+  "223516f7bf2eb42c8405fe0872cae2656f848723": {
+   "ts": "2026-11-19T05:01:52+03:30",
+   "proto": "trojan",
+   "host": "104.20.26.192",
+   "port": 2053
   }
  }
 }
