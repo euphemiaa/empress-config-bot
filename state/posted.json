@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-20T12:43:58+03:30",
+ "updated": "2026-11-20T15:19:19+03:30",
  "items": {
   "f078f2e2c11827f8c3fe64ac30c6913edb154622": {
    "ts": "2026-11-12T22:07:51+03:30",
@@ -2665,6 +2665,54 @@
    "proto": "trojan",
    "host": "flawers.shop",
    "port": 54032
+  },
+  "a2e0c0796d413a75892cecf08a0daabd139e4bda": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "vless",
+   "host": "87.120.92.186",
+   "port": 2087
+  },
+  "44dbc911b39d542d136dd4172cf5c8b23c249af0": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "vless",
+   "host": "188.225.57.185",
+   "port": 443
+  },
+  "0c42685e6b030effd625dbdf1e7acf1f16f8c2fc": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "vmess",
+   "host": "104.21.91.53",
+   "port": 8443
+  },
+  "8da77803376b77389f8ddf1b8126032a124250e0": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "ss",
+   "host": "leviko-gb2271.shopingggg.ir",
+   "port": 443
+  },
+  "7c63b89429acc9189ab5f7945278b98b39a5a596": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "vmess",
+   "host": "104.17.77.77",
+   "port": 8443
+  },
+  "131569bc413ae82f7023007b3e6d761c62ab5cb7": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "ss",
+   "host": "leviko-nl8242.shopingggg.ir",
+   "port": 443
+  },
+  "19c69f49752707e0b94010ab3ecdbda3ff15ddf3": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "ss",
+   "host": "leviko-ch4470.shopingggg.ir",
+   "port": 19999
+  },
+  "625eff9d822cd893209c009806642423eed72589": {
+   "ts": "2026-11-20T15:19:19+03:30",
+   "proto": "ss",
+   "host": "dns22.m3hrzd.ir",
+   "port": 1348
   }
  }
 }
