@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-20T15:19:19+03:30",
+ "updated": "2026-11-20T22:22:33+03:30",
  "items": {
   "f078f2e2c11827f8c3fe64ac30c6913edb154622": {
    "ts": "2026-11-12T22:07:51+03:30",
@@ -12,90 +12,6 @@
    "ts": "2026-11-15T15:49:32+03:30",
    "proto": "vless",
    "host": "pl1.obxodvpn.us",
-   "port": 443
-  },
-  "d724dbdcf2ac03e94786f623d6d0bae554bf80f2": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "vless",
-   "host": "bg3.univesalsrv.com",
-   "port": 443
-  },
-  "599a7b648ba9084d760ec2004d378b332bc65c92": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "vless",
-   "host": "89.35.14.33",
-   "port": 443
-  },
-  "771ded3b18edb5ade10f926111a24eae7922834d": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "vless",
-   "host": "150.40.126.22",
-   "port": 443
-  },
-  "bfb6edbe35aebcf42ad84534e5584c75b9c9c8fb": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "vless",
-   "host": "84.32.96.251",
-   "port": 443
-  },
-  "3008fb40dde0e8d28c9ac6e1f9c0442ea37a9a8d": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "vless",
-   "host": "84.38.184.87",
-   "port": 2083
-  },
-  "2459afcbfc5fa9501e0661a3c378071918445c2d": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "vless",
-   "host": "89.35.14.30",
-   "port": 443
-  },
-  "ae49bf60869e8be09cbc1fecb1793825506b1930": {
-   "ts": "2026-11-10T20:36:22+03:30",
-   "proto": "ss",
-   "host": "oztq9osla2ad.dop15.com",
-   "port": 26412
-  },
-  "b21f8d85c76deaf8d4c5d3cbc045c5b26d0492cd": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vless",
-   "host": "aed6c4x.pl7.h1clayd.click",
-   "port": 443
-  },
-  "9a7a7115a7c6184d520a11b9cd7899ab91b40f9a": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vless",
-   "host": "95.85.231.3",
-   "port": 2087
-  },
-  "6c845aab91c222b7240d1a96fea7d7c610ac2709": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vless",
-   "host": "89.35.14.30",
-   "port": 443
-  },
-  "8ab8f8b93e0b01e7b12cb272943a8ee63516cc86": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vless",
-   "host": "201.58.189.105",
-   "port": 2083
-  },
-  "da67374f5e058d52228bd914f6ff866e0a604fa6": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vless",
-   "host": "201.58.189.104",
-   "port": 2083
-  },
-  "193e0e7ab8d7d63ea135265b51b82933111275d1": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vless",
-   "host": "subscribe.goonars.com",
-   "port": 443
-  },
-  "c97a3378eb89f4ad45563568b15c65e968fdec21": {
-   "ts": "2026-11-10T21:49:01+03:30",
-   "proto": "vmess",
-   "host": "162.159.128.17",
    "port": 443
   },
   "418698869047d5c7685e504f6cfe912e5db9b3ba": {
@@ -2713,6 +2629,54 @@
    "proto": "ss",
    "host": "dns22.m3hrzd.ir",
    "port": 1348
+  },
+  "cec7bec34f10f4004bab3b9ad105f9f9da2cafa0": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "vless",
+   "host": "r5.pythonmakemigreat.wiki",
+   "port": 8443
+  },
+  "5da596139f5a06c726bb81786d6e3161d5b2f691": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "vless",
+   "host": "717252g.nl8.h1clayd.click",
+   "port": 443
+  },
+  "aad3dfadd6dea038f59e253d9840603fca6260ee": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "vless",
+   "host": "37.9.4.62",
+   "port": 443
+  },
+  "ae89357e5af9d80bde935408a4d62b77a5bf73d2": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "ss",
+   "host": "leviko-ch0140.shopingggg.ir",
+   "port": 19999
+  },
+  "f72815210d0763a85458069d969a2ce090fbf481": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "ss",
+   "host": "news.bushyjenz.cyou",
+   "port": 42878
+  },
+  "11eae8fab92fc5f32f57c4d9809769471649250f": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "ss",
+   "host": "leviko-sg3477.shopingggg.ir",
+   "port": 19999
+  },
+  "fa50ab468b91bbb422ac5f9c1a8fbe1a98cdfab0": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "ss",
+   "host": "dash.chiex.ir",
+   "port": 1349
+  },
+  "3068c21123cb4c95f79b6ab0bab5b2d6e4a521e2": {
+   "ts": "2026-11-20T22:22:33+03:30",
+   "proto": "ss",
+   "host": "static.28.210.29.2.clients.your-server.de",
+   "port": 25565
   }
  }
 }
