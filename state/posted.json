@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-21T21:17:13+03:30",
+ "updated": "2026-11-21T22:52:36+03:30",
  "items": {
   "f078f2e2c11827f8c3fe64ac30c6913edb154622": {
    "ts": "2026-11-12T22:07:51+03:30",
@@ -20,53 +20,11 @@
    "host": "amasoid.ddns.net",
    "port": 14514
   },
-  "dc6ff32d1f70188f1a941cfa2482b46829be2938": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "vless",
-   "host": "tuns.rupfem.ir",
-   "port": 8443
-  },
-  "1afa631401cd15a8b5fabf28ecd94abc76d7b4f8": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "vless",
-   "host": "961ec0g.nl13.h1clayd.click",
-   "port": 443
-  },
-  "6aca7fb910a724850844893574ffbd2308801fc9": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "vless",
-   "host": "717252g.nl8.h1clayd.click",
-   "port": 443
-  },
   "721ef6f0a66d85c9e7d5479c99613c759f1d555b": {
    "ts": "2026-11-14T21:42:09+03:30",
    "proto": "vless",
    "host": "15b171g.nl7.h1clayd.click",
    "port": 443
-  },
-  "1d79742bc075f59982c465c729746556fc5c0dea": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "vless",
-   "host": "guide.blog-forme.ru",
-   "port": 2087
-  },
-  "07cc1302715c8d21bee49d046b48e741d619dedd": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "vless",
-   "host": "95.140.152.173",
-   "port": 2083
-  },
-  "435fc52eb7ba1e0bf440418c385fadda6ccb7a77": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "vless",
-   "host": "212.41.9.190",
-   "port": 2053
-  },
-  "f70e5d128b53471a587cbe18a1dc8abd3b3bd14a": {
-   "ts": "2026-11-11T21:38:48+03:30",
-   "proto": "ss",
-   "host": "tuns.rupfem.ir",
-   "port": 8080
   },
   "6f2f4ad69e60f6c0d43b892b37dd8923487642cf": {
    "ts": "2026-11-12T04:17:43+03:30",
@@ -2743,6 +2701,54 @@
    "proto": "ss",
    "host": "leviko-sg6512.shopingggg.ir",
    "port": 19999
+  },
+  "22767a3e9bdfb4cb9c36fc7bd7b3393f22ca9dd0": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vless",
+   "host": "961ec0g.nl17.h1clayd.click",
+   "port": 443
+  },
+  "a6b7436bee5d8a658e74c815e323c41242249389": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vless",
+   "host": "95.85.231.3",
+   "port": 2087
+  },
+  "f2e62333c18767004dfdd4f7c6e53028aeaa3d1a": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vless",
+   "host": "150.251.141.246",
+   "port": 443
+  },
+  "88ad876c364f49d378a68fb5a98af74b23cfacc9": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vless",
+   "host": "122.8.93.4",
+   "port": 8443
+  },
+  "257713e8e573149ae99187b40b2610feb187ae02": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vless",
+   "host": "178.20.28.5",
+   "port": 8443
+  },
+  "c463ac07c88774aea31898e96785d3f3f410749a": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vless",
+   "host": "48.103.231.82",
+   "port": 443
+  },
+  "8441fcf0f72a53ace4951f53b66495e8654b98fa": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "vmess",
+   "host": "172.64.229.21",
+   "port": 443
+  },
+  "c36f012bc259b285f499cf5db5ed204bcce2396c": {
+   "ts": "2026-11-21T22:52:36+03:30",
+   "proto": "ss",
+   "host": "leviko-it9085.shopingggg.ir",
+   "port": 8388
   }
  }
 }
