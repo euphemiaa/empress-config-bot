@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-24T05:46:13+03:30",
+ "updated": "2026-11-24T10:00:50+03:30",
  "items": {
   "8ee5e75f50504c3920acbce49d9fa5117ab6731d": {
    "ts": "2026-11-15T15:49:32+03:30",
@@ -2625,7 +2625,7 @@
    "port": 2087
   },
   "83bbfaa24ef97db15cc95a41ae2ccdd182fcdb1e": {
-   "ts": "2026-11-24T01:45:53+03:30",
+   "ts": "2026-11-24T10:00:50+03:30",
    "proto": "vless",
    "host": "fc82dfx.nl8.h1clayd.click",
    "port": 443
@@ -2713,6 +2713,48 @@
    "proto": "ss",
    "host": "leviko-sg2619.shopingggg.ir",
    "port": 19999
+  },
+  "32810df81fab90b7bedfec05ce5ff8e138766f40": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "vless",
+   "host": "87.120.92.186",
+   "port": 2087
+  },
+  "120f42e4db2dd70caeda58611db3dfd6a48957ba": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "vless",
+   "host": "195.226.93.224",
+   "port": 443
+  },
+  "dec3df3be4c2090f26e91a684b3c972e6f02bcb3": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "vless",
+   "host": "143.246.211.240",
+   "port": 443
+  },
+  "fbbd9eba5ab04318f6d0626c0688e3bd7b97d198": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "vless",
+   "host": "slot4.ipoxxo.online",
+   "port": 2083
+  },
+  "615f6ea04b65b4a9cf2ed8eea50a0dff6cc26efe": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "vless",
+   "host": "slot5.ipoxxo.online",
+   "port": 2083
+  },
+  "935dbcba8998f4f70a1fc3e4334f46aab59b0cd4": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "vmess",
+   "host": "172.67.161.144",
+   "port": 8443
+  },
+  "e7182c853781fb4951530901372e77a91d0f938c": {
+   "ts": "2026-11-24T10:00:50+03:30",
+   "proto": "trojan",
+   "host": "176.65.151.85",
+   "port": 8443
   }
  }
 }
