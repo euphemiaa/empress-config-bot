@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-26T07:07:14+03:30",
+ "updated": "2026-11-26T13:34:50+03:30",
  "items": {
   "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -31,96 +31,6 @@
    "proto": "vless",
    "host": "fr.abbaas.net",
    "port": 8443
-  },
-  "1b9b83542f76bd059d4bfa521bbf78729ef5a268": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "vless",
-   "host": "it.x8lab.org",
-   "port": 443
-  },
-  "7aabfd6e0d3dde5cfbab745d77102f617cb53539": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "vless",
-   "host": "de7-165.homelab-cdn.cloud",
-   "port": 443
-  },
-  "e70e674e02229997ea41a0d786334d1ec670005a": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "vless",
-   "host": "de7-164.homelab-cdn.cloud",
-   "port": 443
-  },
-  "1d02c046f1b6ee30739b8c35a0ebeac55b6708a0": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "vless",
-   "host": "de7-166.homelab-cdn.cloud",
-   "port": 443
-  },
-  "4de264b1ab791d64236e4af291e195f87a4ca939": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "vless",
-   "host": "362c1eg.se1.h1clayd.click",
-   "port": 443
-  },
-  "64ed152135c10003d0e22f6c268c8f6a23c79f6c": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "ss",
-   "host": "dlc.deltapc.digital",
-   "port": 11133
-  },
-  "b60a9a4282b7f8b4f811828137dedae68438a5fd": {
-   "ts": "2026-11-16T10:10:43+03:30",
-   "proto": "ss",
-   "host": "104.36.66.212",
-   "port": 443
-  },
-  "fa7927be3cf166e9e2cda88c16bf5bc1d2588355": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "vless",
-   "host": "961ec0g.nl13.h1clayd.click",
-   "port": 443
-  },
-  "e4e27c416de388bb9dd61fcc298d9db4b95629d4": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "vless",
-   "host": "240ffdx.nl19.h1clayd.shop",
-   "port": 443
-  },
-  "a735f999b681e93bc53a2780bbda3636c9d139f3": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "vless",
-   "host": "21bd48g.us14.h1clayd.click",
-   "port": 443
-  },
-  "2475af31cdbf7fbf25dc9c98634411be73f2667f": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "vless",
-   "host": "62764fg.nl19.h1clayd.shop",
-   "port": 443
-  },
-  "5e7af45ddca8942dfdfe7dc2439b37425af09cd7": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "vless",
-   "host": "362c1eg.se2.h1clayd.click",
-   "port": 443
-  },
-  "51de87c589aaa2a8561039ffa31257d6ee4e6b11": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "vless",
-   "host": "172.239.4.188",
-   "port": 443
-  },
-  "76988af322801d7368771b308ee6dbfa117b4916": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "ss",
-   "host": "156.146.38.167",
-   "port": 443
-  },
-  "18313c18f0d5d9386577fe859011e0234aad2b90": {
-   "ts": "2026-11-16T12:08:57+03:30",
-   "proto": "ss",
-   "host": "156.146.38.170",
-   "port": 443
   },
   "1318c804f0bbc30e069ea02d5e64ede70e14f518": {
    "ts": "2026-11-16T18:55:28+03:30",
@@ -2574,6 +2484,54 @@
    "ts": "2026-11-26T07:07:14+03:30",
    "proto": "ss",
    "host": "tr.subscriptionservice.ir",
+   "port": 2089
+  },
+  "51b4025d4163f7a829b183e44bf560f6b94c8a52": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vless",
+   "host": "143.246.41.117",
+   "port": 443
+  },
+  "4458240c7e3b925f71e2a3e405031fc166153f2c": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vless",
+   "host": "136.148.83.132",
+   "port": 8443
+  },
+  "7835a18cd063eccc57b9b168275c085cfa646ec2": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vless",
+   "host": "31.58.191.93",
+   "port": 443
+  },
+  "32bbcbd1a4af3fecb28242c3d0eb2fa3f1675c39": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vless",
+   "host": "196.245.52.187",
+   "port": 443
+  },
+  "375bd0a909f79c93f33b64814ed04973c3521778": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vless",
+   "host": "179.254.115.111",
+   "port": 443
+  },
+  "0d8e0784e5f6420eefc86c86e33a3cb24b4a77b4": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vless",
+   "host": "201.8.64.253",
+   "port": 443
+  },
+  "af4bb91d1a1ab78cba5c1c8ea086d37fdf1362ca": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "vmess",
+   "host": "172.66.142.170",
+   "port": 443
+  },
+  "fe4a0a8405dfc25a2900619490f7fa22aac89b53": {
+   "ts": "2026-11-26T13:34:50+03:30",
+   "proto": "ss",
+   "host": "s23.fusetea.ir",
    "port": 2089
   }
  }
