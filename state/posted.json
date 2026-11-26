@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-26T13:34:50+03:30",
+ "updated": "2026-11-26T20:29:42+03:30",
  "items": {
   "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -31,42 +31,6 @@
    "proto": "vless",
    "host": "fr.abbaas.net",
    "port": 8443
-  },
-  "1318c804f0bbc30e069ea02d5e64ede70e14f518": {
-   "ts": "2026-11-16T18:55:28+03:30",
-   "proto": "vless",
-   "host": "nl41.homelab-cdn.cloud",
-   "port": 8443
-  },
-  "9baf086b9b7da9a4e63df60fc76f0798a4f2c352": {
-   "ts": "2026-11-16T18:55:28+03:30",
-   "proto": "vless",
-   "host": "nl40.homelab-cdn.cloud",
-   "port": 8443
-  },
-  "e6e57c2c9309cf732c8c906d90aa36e28892934f": {
-   "ts": "2026-11-16T18:55:28+03:30",
-   "proto": "vless",
-   "host": "ee106.own-homelab.cloud",
-   "port": 443
-  },
-  "bc2418daddd4c58e0519f0289719d237fc45cd08": {
-   "ts": "2026-11-16T18:55:28+03:30",
-   "proto": "vless",
-   "host": "ee11.own-homelab.cloud",
-   "port": 443
-  },
-  "5eb2a3c80f273bd8360cbfd3780a98eee9a7e54e": {
-   "ts": "2026-11-16T18:55:28+03:30",
-   "proto": "vless",
-   "host": "de7-163.homelab-cdn.cloud",
-   "port": 443
-  },
-  "03991ceeb4500889fb1552d4b64eb4f63c12e3bb": {
-   "ts": "2026-11-16T18:55:28+03:30",
-   "proto": "vless",
-   "host": "ee15.own-homelab.cloud",
-   "port": 443
   },
   "c78b6cca0cd353a2fb3750b77ca27fe959c91c79": {
    "ts": "2026-11-16T23:09:47+03:30",
@@ -2533,6 +2497,54 @@
    "proto": "ss",
    "host": "s23.fusetea.ir",
    "port": 2089
+  },
+  "0066fb9142929b477bd60464e2a2b2d67a93cd0f": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "vless",
+   "host": "143.246.41.117",
+   "port": 443
+  },
+  "3e14ec43efdca237e5892754fadf8699c081b4d5": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "vless",
+   "host": "193.233.223.231",
+   "port": 8443
+  },
+  "174f17b03634f4064e7221e05c519904ce420f1a": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "vless",
+   "host": "durov.sky-vault.top",
+   "port": 8443
+  },
+  "dae03cd95842a4eec7f69d133fd9fccecad1076b": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "vless",
+   "host": "jdwabxe.cvewfjg.shop",
+   "port": 443
+  },
+  "2378077514c8b5032a1dc6477b583bae4c3bdba5": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "vless",
+   "host": "8a2e72t.nl20.h1clayd.shop",
+   "port": 443
+  },
+  "224527261e2178e706546c32d41658bb14fd01aa": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "vmess",
+   "host": "172.64.145.93",
+   "port": 443
+  },
+  "8e2544ff14bfac70a5856d3a050512e9312d6680": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "ss",
+   "host": "waic.pro.main.sys-metric-report.com",
+   "port": 28014
+  },
+  "1f79a7ed2f58ee0c534d1e1dcd450bf2e872b377": {
+   "ts": "2026-11-26T20:29:42+03:30",
+   "proto": "ss",
+   "host": "108.181.88.2",
+   "port": 443
   }
  }
 }
