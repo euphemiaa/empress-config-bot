@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-26T04:13:08+03:30",
+ "updated": "2026-11-26T07:07:14+03:30",
  "items": {
   "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -2527,6 +2527,54 @@
    "proto": "ss",
    "host": "uk.fusetea.ir",
    "port": 154
+  },
+  "d0b93c532bc7db6cd14fd0449a8e65711c6b14da": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "vless",
+   "host": "82.22.2.137",
+   "port": 443
+  },
+  "ae01ffd5fe075768f0d4757aedb8b37902c56dab": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "vless",
+   "host": "94.183.206.227",
+   "port": 443
+  },
+  "1c554596b9fcbdd98eacaa5afc6bfeaa6e41a735": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "vless",
+   "host": "143.246.211.240",
+   "port": 443
+  },
+  "59944e779da29692b17a2ca952285283143b15d6": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "vless",
+   "host": "195.206.235.74",
+   "port": 443
+  },
+  "e8084de08f62fbda9aec9ad3152a7e87f2218e21": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "vless",
+   "host": "5.83.142.50",
+   "port": 443
+  },
+  "b2798b155d4b5600bec7356b317afac327b7b2e9": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "vless",
+   "host": "31.58.191.93",
+   "port": 443
+  },
+  "7f6290e843ba07086807344df90fe4373b79afac": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "ss",
+   "host": "s23.fusetea.ir",
+   "port": 2089
+  },
+  "1474cbd5ee9a0ade88fe5df1b6efba7e4379b4e3": {
+   "ts": "2026-11-26T07:07:14+03:30",
+   "proto": "ss",
+   "host": "tr.subscriptionservice.ir",
+   "port": 2089
   }
  }
 }
