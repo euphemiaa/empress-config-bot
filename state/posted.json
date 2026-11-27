@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-27T17:56:55+03:30",
+ "updated": "2026-11-28T02:59:53+03:30",
  "items": {
   "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -13,48 +13,6 @@
    "proto": "vless",
    "host": "143.246.211.240",
    "port": 443
-  },
-  "3dc7471b3073ab37c8504e0c775501f60c956777": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "vless",
-   "host": "362c1eg.se1.h1clayd.click",
-   "port": 443
-  },
-  "cb7deb3f0dffc2732b29647527ad0e7950c39816": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "vless",
-   "host": "czechia.richforever.ru",
-   "port": 443
-  },
-  "59a64563121c74a0674d6f4b8bc9dc82482d1312": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "vless",
-   "host": "87.120.92.186",
-   "port": 2087
-  },
-  "1d11e75b5af3bdd2f833c2e7fa9acc527375c060": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "vless",
-   "host": "185.14.29.29",
-   "port": 443
-  },
-  "46fe5a41632bc9fb2464c0427c870cde320e141b": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "vless",
-   "host": "109.71.245.99",
-   "port": 8443
-  },
-  "2262b550df647a243b8ef94339d0c3701fc520ba": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "vless",
-   "host": "72.56.41.59",
-   "port": 2083
-  },
-  "b279c28bd99b83cddaba3ac0bf35dbb701681b58": {
-   "ts": "2026-11-17T19:38:35+03:30",
-   "proto": "trojan",
-   "host": "flawers.shop",
-   "port": 54032
   },
   "80309fd798583eaba275941d31e06d572c8e77b9": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -2520,6 +2478,54 @@
    "ts": "2026-11-27T17:56:55+03:30",
    "proto": "ss",
    "host": "leviko-ch0322.shopingggg.ir",
+   "port": 19999
+  },
+  "f67a2e718637d10c0f1cf5f0862232438a522acd": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "vless",
+   "host": "nl-06.avroraservice.online",
+   "port": 8443
+  },
+  "a4c63c39641eaa50a0cd5c25ab7aaa0d0c96037e": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "vless",
+   "host": "de.ggssstreaming.ru",
+   "port": 443
+  },
+  "e2da246570783d5cb8124a94ab51006125f0a76e": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "vless",
+   "host": "15b171g.nl7.h1clayd.click",
+   "port": 443
+  },
+  "73508d76222c46212bf41661d706173ecc46b662": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "vless",
+   "host": "164.37.224.245",
+   "port": 443
+  },
+  "f18264e4b0c276ceed1ef59dd710fb938fded721": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "vless",
+   "host": "78.40.209.80",
+   "port": 8443
+  },
+  "8356e646cea4dcbb8c7f30f491dd78ba738f6737": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "vless",
+   "host": "31.207.7.181",
+   "port": 8443
+  },
+  "8939831e5eea0d1b2fb41111d771cde6b3a1c6ba": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "ss",
+   "host": "leviko-nl1751.shopingggg.ir",
+   "port": 443
+  },
+  "fec6d27e37c7da80f961effb79f644ee89b2d973": {
+   "ts": "2026-11-28T02:59:53+03:30",
+   "proto": "ss",
+   "host": "leviko-ch5965.shopingggg.ir",
    "port": 19999
   }
  }
