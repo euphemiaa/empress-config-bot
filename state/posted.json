@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-27T16:05:55+03:30",
+ "updated": "2026-11-27T17:56:55+03:30",
  "items": {
   "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -13,54 +13,6 @@
    "proto": "vless",
    "host": "143.246.211.240",
    "port": 443
-  },
-  "649e0d69056c97e0fef0e571bdef5626c125b898": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vless",
-   "host": "62764fg.nl19.h1clayd.shop",
-   "port": 443
-  },
-  "324ff610fb8e25261cc927ac1d8e8ca86a025a7f": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vless",
-   "host": "13e1cfg.plp1.h1cloud.net",
-   "port": 443
-  },
-  "0232596f9750bffea533c0341115006c533ccb0f": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vless",
-   "host": "95.85.232.83",
-   "port": 2087
-  },
-  "993555dc44903644b91654a9ae990234f1c3bc57": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vless",
-   "host": "87.120.92.186",
-   "port": 2087
-  },
-  "15c94c85596ec96e72d24c39da2be96440499c4d": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vless",
-   "host": "85.14.243.91",
-   "port": 8443
-  },
-  "9c62a383131e24b3739f79c368e3076994bc91bc": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vless",
-   "host": "185.14.29.29",
-   "port": 443
-  },
-  "4741414e0fd4cdb5f8c0cf611cda3ffcca4ee3e7": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "vmess",
-   "host": "104.17.77.77",
-   "port": 8443
-  },
-  "accf66b9d2d7d912664472de656db9ae74975285": {
-   "ts": "2026-11-17T17:24:48+03:30",
-   "proto": "ss",
-   "host": "bbomb.okamii1.ir",
-   "port": 1008
   },
   "3dc7471b3073ab37c8504e0c775501f60c956777": {
    "ts": "2026-11-17T19:38:35+03:30",
@@ -2520,6 +2472,54 @@
    "ts": "2026-11-27T16:05:55+03:30",
    "proto": "ss",
    "host": "leviko-sg3063.shopingggg.ir",
+   "port": 19999
+  },
+  "0a76b6eab4ec195438737f47083a5d55fadcf08b": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vless",
+   "host": "coughed-gongs.freevideochats.org",
+   "port": 443
+  },
+  "d3bd47d65566d999d6ee11cfb09bacfac261d5db": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vless",
+   "host": "homestead-walloping.sports-streams.org",
+   "port": 443
+  },
+  "1d961dadeed9839139400f756dc95fc084d1fd21": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vless",
+   "host": "87.120.106.95",
+   "port": 443
+  },
+  "993555dc44903644b91654a9ae990234f1c3bc57": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vless",
+   "host": "87.120.92.186",
+   "port": 2087
+  },
+  "31226fdce88f4391cf964162148d957096a74438": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vless",
+   "host": "195.58.46.231",
+   "port": 443
+  },
+  "cc841955c945eac2698e6e9290fd31fac67af747": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vless",
+   "host": "xray2-direct-mci1-fs-ce.freesocks.work",
+   "port": 443
+  },
+  "9a2a6ddb9cb84e422d32a05cd5c7dbdcec637a62": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "vmess",
+   "host": "104.21.0.1",
+   "port": 8443
+  },
+  "86f809c142706f3b59adaabfe491ec092983de51": {
+   "ts": "2026-11-27T17:56:55+03:30",
+   "proto": "ss",
+   "host": "leviko-ch0322.shopingggg.ir",
    "port": 19999
   }
  }
