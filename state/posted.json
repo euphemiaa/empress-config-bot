@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-27T05:58:06+03:30",
+ "updated": "2026-11-27T16:05:55+03:30",
  "items": {
   "e37a93df30e1df1cf7fc58d5bc0fe2e2994a02af": {
    "ts": "2026-11-18T03:10:22+03:30",
@@ -12,102 +12,6 @@
    "ts": "2026-11-21T05:54:03+03:30",
    "proto": "vless",
    "host": "143.246.211.240",
-   "port": 443
-  },
-  "eb0f0e43de2141d8a5c6c31decee957c36dd6ed7": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vless",
-   "host": "fr.abbaas.net",
-   "port": 8443
-  },
-  "a98f0487c21adb63872e99083625a182250c9ec1": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vless",
-   "host": "3b3377x.es5.h1clayd.click",
-   "port": 443
-  },
-  "00660893778676ff04283fece49f232b72744c0c": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vless",
-   "host": "player.study.golangwikito.cfd",
-   "port": 8443
-  },
-  "6064e90e26e83469a7e25c506671520e48a84cec": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vless",
-   "host": "e60833x.nl7.h1clayd.click",
-   "port": 443
-  },
-  "a95ed44f74893d59420ac3bd2fd0f587094b8cb0": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vless",
-   "host": "a357e2g.es5.h1clayd.click",
-   "port": 443
-  },
-  "3a0db7432a99de074cbc7d219c60b401ba9a685f": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vless",
-   "host": "static.study.golangwikito.cfd",
-   "port": 8443
-  },
-  "dc25562926404aa75ab93880f6aea9412e3a2f76": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "vmess",
-   "host": "104.21.57.84",
-   "port": 8443
-  },
-  "f80a317da1d794b4e144a253c76b08ff8da5a3c3": {
-   "ts": "2026-11-17T07:27:49+03:30",
-   "proto": "ss",
-   "host": "173.244.56.6",
-   "port": 443
-  },
-  "fd5a0f008ad041aa8f723745afcf7fe9bce63f41": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vless",
-   "host": "fr.abbaas.net",
-   "port": 8443
-  },
-  "a6a924848e2d69cb659a274a403440b6e1e3441a": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vless",
-   "host": "ec7a81g.de19.h1clayd.click",
-   "port": 443
-  },
-  "94739f23f834f6bb86aa650f34d6421621353b4c": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vless",
-   "host": "media.study.golangwikito.cfd",
-   "port": 8443
-  },
-  "48f589dd803ec672f58b08b916550e920dc1cd53": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vless",
-   "host": "801a40g.de14.h1clayd.click",
-   "port": 443
-  },
-  "f0adaafd9639556357d3d78edaabd563d3b82282": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vless",
-   "host": "557e58g.pl8.h1clayd.click",
-   "port": 443
-  },
-  "7f2a972470e0cfcf66d355c0d8b7f2b096394cd3": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vless",
-   "host": "0592efg.us8.h1clayd.click",
-   "port": 443
-  },
-  "8419604fcff8522f254b16db50ccf4f75ca81f56": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "vmess",
-   "host": "172.67.161.144",
-   "port": 8443
-  },
-  "809da0ca247cb5d4cb37bdf68ce14cf2cf9a3db8": {
-   "ts": "2026-11-17T08:19:32+03:30",
-   "proto": "ss",
-   "host": "198.98.53.130",
    "port": 443
   },
   "649e0d69056c97e0fef0e571bdef5626c125b898": {
@@ -1521,7 +1425,7 @@
    "port": 443
   },
   "3f33d3ce525074abed26dad296ac3f09fb87f24f": {
-   "ts": "2026-11-22T15:04:28+03:30",
+   "ts": "2026-11-27T16:05:55+03:30",
    "proto": "ss",
    "host": "jpa.123069.xyz",
    "port": 53758
@@ -2574,6 +2478,48 @@
    "ts": "2026-11-27T05:58:06+03:30",
    "proto": "ss",
    "host": "leviko-fr5418.shopingggg.ir",
+   "port": 19999
+  },
+  "9d04f23ef65a468aa26863ab48c40975ceab17fe": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "vless",
+   "host": "185.200.244.37",
+   "port": 443
+  },
+  "1a3587f256705c889311334cc4430cd42a531998": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "vless",
+   "host": "193.168.140.228",
+   "port": 443
+  },
+  "f400afdaabfe0598acd2b5e9432ca26896357ab2": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "vless",
+   "host": "93.184.169.233",
+   "port": 443
+  },
+  "76aba1c258274857db563f35dbca76a3f313b40d": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "vless",
+   "host": "jdwabxe.cvewfjg.shop",
+   "port": 443
+  },
+  "0c61a75113f365b6bb2cd3be547afa301e463c7c": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "vless",
+   "host": "leviko-se8320.shopingggg.ir",
+   "port": 8444
+  },
+  "21d5e3b389819378010d6413d1db77a6c27c1286": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "trojan",
+   "host": "172.67.199.12",
+   "port": 443
+  },
+  "d9234d12fbd4ede522ba394c070fba41369c7801": {
+   "ts": "2026-11-27T16:05:55+03:30",
+   "proto": "ss",
+   "host": "leviko-sg3063.shopingggg.ir",
    "port": 19999
   }
  }
