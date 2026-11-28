@@ -1,60 +1,12 @@
 {
  "version": 1,
- "updated": "2026-11-28T03:46:24+03:30",
+ "updated": "2026-11-28T11:26:54+03:30",
  "items": {
   "0b936d1c2117f9385b5f4752aecbcc8e41c06d72": {
    "ts": "2026-11-21T05:54:03+03:30",
    "proto": "vless",
    "host": "143.246.211.240",
    "port": 443
-  },
-  "528c02d5fafc8f803b15d253071694bc7e72cfa4": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vless",
-   "host": "guide.blog-forme.ru",
-   "port": 2087
-  },
-  "5f33f8a08dc5d186963e7f16ce03facaeb50fd1a": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vless",
-   "host": "b3cd32g.es1.h1clayd.click",
-   "port": 443
-  },
-  "ed463ba569da2e7a68d1586397f5d720c75362c5": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vless",
-   "host": "77.239.102.240",
-   "port": 443
-  },
-  "e548cfeded80227be6b9c9fecd5b769310b71c57": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vless",
-   "host": "85.14.243.91",
-   "port": 8443
-  },
-  "7a8a485dd8db92a512b6e1c0c777ae4ea99401bf": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vless",
-   "host": "89.125.234.224",
-   "port": 443
-  },
-  "e7f7ace72b5ad821cf6d7efa958cd3909ed56c46": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vless",
-   "host": "72.56.41.59",
-   "port": 2083
-  },
-  "df9e69c0ba3bf31e26c90cef7f49a602db222d3e": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "vmess",
-   "host": "172.64.155.209",
-   "port": 8443
-  },
-  "e53c7e3ad0ac406b781b64abdf35e2a7cedb5afb": {
-   "ts": "2026-11-18T04:29:38+03:30",
-   "proto": "ss",
-   "host": "leviko-ca8416.shopingggg.ir",
-   "port": 8080
   },
   "2f2c1b88c5dbf6b9d6c47c089fe6d603dfeafb7d": {
    "ts": "2026-11-18T12:45:46+03:30",
@@ -2527,6 +2479,54 @@
    "proto": "ss",
    "host": "leviko-ch7340.shopingggg.ir",
    "port": 19999
+  },
+  "4de957cbba3d9ee3ee3753069e1f5eb469e26688": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vless",
+   "host": "121.127.34.173",
+   "port": 8443
+  },
+  "59e5a71f0a21a441a99a77029576a6c835c8583f": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vless",
+   "host": "185.14.29.29",
+   "port": 443
+  },
+  "46af8ba1c2cbc17adba73b08b4bd5556f553c26e": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vless",
+   "host": "31.207.7.181",
+   "port": 8443
+  },
+  "b487a8eaac290b2d2af0c1ab60a93aa9a7210ba5": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vless",
+   "host": "89.125.13.161",
+   "port": 8443
+  },
+  "8c052afcb33d661222198864101395a12cf2671f": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vless",
+   "host": "48.102.50.103",
+   "port": 2053
+  },
+  "6ff7d2e4e46c188e455d8472f4e1f6aaae2c4580": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vless",
+   "host": "78.40.209.80",
+   "port": 8443
+  },
+  "d342b7782a3db5aa51e6fcb381175addf5f77729": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "vmess",
+   "host": "104.18.42.163",
+   "port": 443
+  },
+  "a1a1736e205528a4eb05c8cc0b84ae47f0debec4": {
+   "ts": "2026-11-28T11:26:54+03:30",
+   "proto": "ss",
+   "host": "jp-telegram-khp25-viber-09773510813.premiumx.giize.com",
+   "port": 1080
   }
  }
 }
